@@ -1,2 +1,2 @@
 cd /home/ctf
-/usr/bin/python -u /home/ctf/src.py
+python -u /home/ctf/src.py
