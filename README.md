@@ -1,4 +1,4 @@
-## netcat-doceker
+## netcat-docker
 
 CTF中netcat题目有关docker的相关构造文件。
 
@@ -12,7 +12,7 @@ CTF中netcat题目有关docker的相关构造文件。
     默认连接：`nc 127.0.0.1 65101`
 
   - `tictactoe`
-  
+
     Hackergame2020题目，pwn题目类型。
 
     默认连接：`nc 127.0.0.1 65102`
