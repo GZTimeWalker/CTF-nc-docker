@@ -17,4 +17,10 @@ CTF中netcat题目有关docker的相关构造文件。
 
     默认连接：`nc 127.0.0.1 65102`
 
+  - `string_tools`
+
+    Hackergame2020题目，misc题目类型。
+
+    默认连接：`nc 127.0.0.1 65103`
+
 - 后期更新...
