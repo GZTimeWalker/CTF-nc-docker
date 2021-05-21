@@ -9,6 +9,7 @@ RUN mkdir /home/ctf/
 
 COPY ./tictactoe /home/ctf/tictactoe
 COPY ./flag /home/ctf/flag
+COPY ./run.sh /run.sh
 
 CMD ["xinetd","-dontfork"]
 

@@ -2,7 +2,8 @@ service ctf
 {
     disable       = no
     socket_type   = stream
-    server        = /home/ctf/tictactoe
+    server        = /bin/sh
+    server_args   = /run.sh
     port          = 2333
     protocol      = tcp
     user          = root
