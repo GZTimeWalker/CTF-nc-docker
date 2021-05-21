@@ -1,0 +1,12 @@
+service ctf
+{
+    disable       = no
+    socket_type   = stream
+    server        = /home/ctf/tictactoe
+    port          = 2333
+    protocol      = tcp
+    user          = root
+    wait          = no
+    flags         = NODELAY
+    type          = UNLISTED
+}

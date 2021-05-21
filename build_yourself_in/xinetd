@@ -1,0 +1,13 @@
+service ctf
+{
+    disable       = no
+    socket_type   = stream
+    server        = /usr/bin/python3
+    server_args   = -u /home/ctf/program.py
+    port          = 2333
+    protocol      = tcp
+    user          = root
+    wait          = no
+    flags         = NODELAY
+    type          = UNLISTED
+}

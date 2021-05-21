@@ -1,0 +1,15 @@
+FROM ubuntu:20.04
+
+RUN apt update && apt -y upgrade
+RUN apt install -y xinetd python3
+
+COPY xinetd /etc/xinetd.d/ctf
+
+RUN mkdir /home/ctf/
+
+COPY ./program.py /home/ctf/program.py
+COPY ./flag /home/ctf/flag
+
+CMD ["xinetd","-dontfork"]
+
+
