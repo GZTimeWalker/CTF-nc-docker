@@ -3,15 +3,13 @@
 from sys import version
 import os
 
-os.chdir('/home/ctf/')
-
 def main():
     print(f'{version}\n')
-    print('[*] Only aliens are allowed!\n')
+    print('[*] Only \U0001F47D are allowed!\n')
     for _ in range(10):
         text = input('>>> ').lower()
         if "'" in text or '"' in text:
-            print('No quotes are allowed! \n\nExiting..\n')
+            print('\U000026D4 No quotes are allowed! \U000026D4\n\nExiting..\n')
             break
         else:
             exec(text, {'__builtins__': None, 'print':print})
