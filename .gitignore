@@ -3,3 +3,5 @@
 Dockerfile
 docker-compose.yml
 xinetd
+
+!template/*

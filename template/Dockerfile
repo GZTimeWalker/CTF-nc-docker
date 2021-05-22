@@ -1,0 +1,33 @@
+FROM ubuntu:20.04
+ENV LANG C.UTF-8
+
+RUN sed -i s@/archive.ubuntu.com/@/{mirrors_base_url}/@g /etc/apt/sources.list
+
+RUN apt update && apt -y upgrade
+RUN apt install -y xinetd python3
+
+# apt requirements
+{apt_requirements}
+
+# extra command
+{extra_cmd}
+
+RUN rm -rf /var/lib/apt/lists/ && rm -rf /root/.cache && apt autoclean && rm -rf /tmp/* /var/lib/apt/* /var/cache/* /var/log/*
+
+RUN useradd -m ctf
+
+# copy problem
+{copy_problem_cmd}
+
+RUN mkdir /home/ctf/run/
+
+# run scripts
+{run_scripts}
+
+# chown & chmod
+RUN chown -R root:ctf /home/ctf
+RUN chmod -R 755 /home/ctf
+
+COPY xinetd /etc/xinetd.d/ctf
+
+CMD ["xinetd","-dontfork"]

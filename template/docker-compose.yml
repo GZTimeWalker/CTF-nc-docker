@@ -1,0 +1,7 @@
+version: '2'
+services:
+  nc_docker:
+    build: .
+    restart: always
+    ports:
+      %s
