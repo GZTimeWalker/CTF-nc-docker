@@ -62,7 +62,7 @@ def generate_dockerfile(problems):
     }
 
     for problem in problems:
-        
+
         if not problem['enable']:
             continue
 
@@ -124,7 +124,17 @@ if __name__ == "__main__":
     if(len(problems) == 0):
         print('No problem found!')
         exit(1)
+
     generate_dockerfile(problems)
     generate_xinetd(problems)
     generate_dockercompose(problems)
     os.system('docker compose up -d --build')
+
+    port = CONFIG['port_range_start']
+    for problem in problems:
+
+        if not problem['enable']:
+            continue
+
+        print(f">>> [{port}] => {problem['name']}")
+        port = port + 1
