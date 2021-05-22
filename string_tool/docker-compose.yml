@@ -1,7 +1,0 @@
-version: '2'
-services:
-  challenge:
-    build: .
-    ports:
-      - ${port}:2333
-    restart: always
