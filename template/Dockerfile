@@ -26,7 +26,9 @@ RUN mkdir /home/ctf/run/
 
 # chown & chmod
 RUN chown -R root:ctf /home/ctf
-RUN chmod -R 755 /home/ctf
+RUN chmod -R 711 /home/ctf && chmod 711 /home
+
+{chmod_cmd}
 
 COPY xinetd /etc/xinetd.d/ctf
 

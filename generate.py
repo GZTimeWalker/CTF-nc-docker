@@ -58,7 +58,8 @@ def generate_dockerfile(problems):
         'apt_requirements': '',
         'extra_cmd': '',
         'copy_problem_cmd': '',
-        'run_scripts': ''
+        'run_scripts': '',
+        'chmod_cmd': ''
     }
 
     for problem in problems:
@@ -87,6 +88,8 @@ def generate_dockerfile(problems):
         script = f"cd /home/ctf/{problem['name']}\\n{problem['launch']} {' '.join(problem['args'])}\\n"
         dockerfile_data['run_scripts'] += f"RUN echo \'{script}\' > /home/ctf/run/{problem['name']}.sh\n"
 
+        dockerfile_data['chmod_cmd'] += f"RUN chmod 755 /home/ctf/run/{problem['name']}.sh "
+        dockerfile_data['chmod_cmd'] += f"&& chmod -R 755 /home/ctf/{problem['name']}\n"
 
     with open('template/Dockerfile','r') as f:
         template = f.read()
