@@ -3,6 +3,8 @@ ENV LANG C.UTF-8
 
 RUN sed -i s@/archive.ubuntu.com/@/{mirrors_base_url}/@g /etc/apt/sources.list
 
+RUN useradd -m ctf
+
 RUN apt update && apt -y upgrade
 RUN apt install -y xinetd python3
 
@@ -13,8 +15,6 @@ RUN apt install -y xinetd python3
 {extra_cmd}
 
 RUN rm -rf /var/lib/apt/lists/ && rm -rf /root/.cache && apt autoclean && rm -rf /tmp/* /var/lib/apt/* /var/cache/* /var/log/*
-
-RUN useradd -m ctf
 
 # copy problem
 {copy_problem_cmd}
