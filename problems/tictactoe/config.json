@@ -1,0 +1,9 @@
+{
+    "enable": true,
+    "apt_requirements": [],
+    "all_copy": true,
+    "launch": "./tictactoe",
+    "args": [],
+    "extra_cmd": [],
+    "copy_files": []
+}

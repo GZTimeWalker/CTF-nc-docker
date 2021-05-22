@@ -1,2 +1,0 @@
-cd /home/ctf
-./tictactoe
