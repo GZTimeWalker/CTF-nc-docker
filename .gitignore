@@ -1,9 +1,3 @@
-problems/*/Dockerfile*
-problems/*/docker-compose.yml
-problems/*/xinetd
-problems/*/.env
-problems.bak/**
-
 .vscode/*
 
 Dockerfile
