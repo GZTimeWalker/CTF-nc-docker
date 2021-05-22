@@ -20,6 +20,7 @@ CTF中netcat题目有关docker的相关构造文件。
 ```
 
 `mirrors_base_url`: Ubuntu软件源
+
 `port_range_start`: 起始端口号
 
 ### `config.json`
@@ -36,10 +37,15 @@ CTF中netcat题目有关docker的相关构造文件。
 ```
 
 `apt_requirements`: 需要使用 apt 安装的包
+
 `all_copy`: 是否拷贝题目目录全部文件
+
 `launch`: 启动程序
+
 `args`: 启动参数
+
 `extra_cmd`: 其余需要执行的指令 (如 pip)
+
 `copy_files`: 当不全部拷贝题目文件时，需要拷贝的文件 (相对于题目目录的路径)
 
 ## 构建和运行
