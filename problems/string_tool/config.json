@@ -5,5 +5,8 @@
     "launch": "python3",
     "args": ["-u","./src.py"],
     "extra_cmd": [],
-    "copy_files": []
+    "copy_files": [],
+    "echo_msg": ["233 同学最近刚刚学会了 Python 的字符串操作，于是写了两个小程序运行在自己的服务器上。这个工具提供两个功能:",
+        "字符串大写工具以及UTF-7 到 UTF-8 转换工具",
+        "源代码: https://tinyurl.com/yguxatup"]
 }

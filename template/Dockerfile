@@ -20,6 +20,7 @@ RUN rm -rf /var/lib/apt/lists/ && rm -rf /root/.cache && apt autoclean && rm -rf
 {copy_problem_cmd}
 
 RUN mkdir /home/ctf/run/
+RUN mkdir /home/ctf/assets/
 
 # run scripts
 {run_scripts}

@@ -5,5 +5,8 @@
     "launch": "./tictactoe",
     "args": [],
     "extra_cmd": [],
-    "copy_files": []
+    "copy_files": [],
+    "echo_msg": [
+        "一道很好的PWN入门题。",
+        "题目附件：https://tinyurl.com/yhebmax2"]
 }

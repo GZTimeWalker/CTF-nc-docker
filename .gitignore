@@ -4,4 +4,6 @@ Dockerfile
 docker-compose.yml
 xinetd
 
+tmp/*
+
 !template/*

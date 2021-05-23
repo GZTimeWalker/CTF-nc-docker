@@ -3,10 +3,13 @@ import json
 
 CONFIG = {
     "mirrors_base_url": "mirrors.tuna.tsinghua.edu.cn",
-    "port_range_start": 65100
+    "port_range_start": 65100,
 }
 
 def init():
+    if not os.path.exists('tmp'):
+        os.makedirs('tmp')
+
     if not os.path.exists('problems'):
         os.makedirs('problems')
         print('Please put your problems in ./problems/')
@@ -36,7 +39,7 @@ def get_problems():
                     with open(os.path.join(root, problem, 'config.json'),'w') as f:
                         f.write(default_config.read())
             else:
-                with open(os.path.join(root, problem, 'config.json'),'r') as f:
+                with open(os.path.join(root, problem, 'config.json'),'r', encoding='utf-8') as f:
                     p = {'name': problem}
                     p.update(json.load(f))
                     problems.append(p)
@@ -85,8 +88,23 @@ def generate_dockerfile(problems):
                 for item in problem['copy_files']:
                     dockerfile_data['copy_problem_cmd'] += f"COPY problems/{problem['name']}/{item} /home/ctf/{problem['name']}/{item}\n"
 
-        script = f"cd /home/ctf/{problem['name']}\\n{problem['launch']} {' '.join(problem['args'])}\\n"
-        dockerfile_data['run_scripts'] += f"RUN echo \'{script}\' > /home/ctf/run/{problem['name']}.sh\n"
+        script = f"cd /home/ctf/{problem['name']}\n"
+
+        if len(problem['echo_msg']) > 0:
+            script += f"echo \'{(' ' + problem['name'] + ' ').center(60,'=')}\'\n"
+
+            for item in problem['echo_msg']:
+                script += f"echo \'{item}\'\n"
+
+            script += f"echo \'{'=' * 60}\'\n"
+            script += f"echo \'\'\n"
+
+        script += f"{problem['launch']} {' '.join(problem['args'])}\n"
+
+        with open(f"tmp/{problem['name']}.sh",'wb') as f:
+            f.write(script.encode())
+
+        dockerfile_data['run_scripts'] += f"COPY tmp/{problem['name']}.sh /home/ctf/run/{problem['name']}.sh\n"
 
         dockerfile_data['chmod_cmd'] += f"RUN chmod 755 /home/ctf/run/{problem['name']}.sh "
         dockerfile_data['chmod_cmd'] += f"&& chmod -R 755 /home/ctf/{problem['name']}\n"
@@ -140,6 +158,7 @@ if __name__ == "__main__":
     generate_dockerfile(problems)
     generate_xinetd(problems)
     generate_dockercompose(problems)
+
     os.system('docker compose up -d --build')
 
     port = CONFIG['port_range_start']

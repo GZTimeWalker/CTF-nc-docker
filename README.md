@@ -32,7 +32,8 @@ CTF中netcat题目有关docker的相关构造文件。
     "launch": "python3",
     "args": ["-u","./src.py"],
     "extra_cmd": [],
-    "copy_files": []
+    "copy_files": [],
+    "echo_msg": []
 }
 ```
 
@@ -47,6 +48,8 @@ CTF中netcat题目有关docker的相关构造文件。
 `extra_cmd`: 其余需要执行的指令 (如 pip)
 
 `copy_files`: 当不全部拷贝题目文件时，需要拷贝的文件 (相对于题目目录的路径)
+
+`echo_msg`: 执行程序前输出的说明。
 
 ## 构建和运行
 
@@ -67,6 +70,14 @@ CTF中netcat题目有关docker的相关构造文件。
   Hackergame2020题目，misc题目类型。
 
 - `calculator_never_overflow`
+
+  Hackergame2020题目，math题目类型。
+
+- `theorem_prover`
+
+  Hackergame2020题目，math题目类型。
+
+- `unboxing_simulator`
 
   Hackergame2020题目，math题目类型。
 

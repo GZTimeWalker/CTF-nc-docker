@@ -1,4 +1,5 @@
 {
     "mirrors_base_url": "mirrors.tuna.tsinghua.edu.cn",
-    "port_range_start": 65100
+    "port_range_start": 65100,
+    "target_length": 40
 }
