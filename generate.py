@@ -105,6 +105,10 @@ def generate_xinetd(problems):
 
     with open('xinetd','wb') as f:
         for problem in problems:
+
+            if not problem['enable']:
+                continue
+
             f.write((template % (port, problem['name'])).encode())
             f.write(b'\n\n')
             port = port + 1
@@ -115,8 +119,13 @@ def generate_dockercompose(problems):
 
     data = ''
     port = CONFIG['port_range_start']
-    for i in range(len(problems)):
-        data += f"- {port + i}:{port + i}\n      "
+    for problem in problems:
+
+        if not problem['enable']:
+            continue
+
+        data += f"- {port}:{port}\n      "
+        port = port + 1
 
     with open('docker-compose.yml','w') as f:
         f.write(template % data)
