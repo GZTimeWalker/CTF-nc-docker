@@ -94,7 +94,7 @@ def generate_dockerfile(problems):
             dockerfile_data['copy_problem_cmd'] += f"# ==> for {problem['name']}\n"
             if problem['all_copy']:
                 for item in get_all_files(os.path.join('problems',problem['name'])):
-                    dockerfile_data['copy_problem_cmd'] += f"COPY {item} /home/ctf/{item.replace('problems/','').replace(problem['name'], problem['dir'])}\n"
+                    dockerfile_data['copy_problem_cmd'] += f"COPY {item} /home/ctf/{item.replace('problems/','').replace(problem['name'] + '/', problem['dir'] + '/')}\n"
             else:
                 for item in problem['copy_files']:
                     dockerfile_data['copy_problem_cmd'] += f"COPY problems/{problem['name']}/{item} /home/ctf/{problem['dir']}/{item}\n"
@@ -169,6 +169,8 @@ if __name__ == "__main__":
     generate_dockerfile(problems)
     generate_xinetd(problems)
     generate_dockercompose(problems)
+
+    os.system('docker-compose up --build -d')
 
     port = CONFIG['port_range_start']
     for problem in problems:

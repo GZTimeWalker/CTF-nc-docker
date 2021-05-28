@@ -4,10 +4,13 @@ import random
 import os
 import hashlib
 import math
-import time
+import string
 
-flag = int.from_bytes(open("flag", "rb").read() + hashlib.sha256(str(time.time()).encode()), "big")
-secret = "43c5cf58ed8872cbbfb9625f0dcaf6e0"
+alphabet = (string.digits + string.ascii_letters)
+
+append = ''.join([random.choice(alphabet) for _ in range(8)]).encode() + b'}'
+flag = int.from_bytes(open("flag", "r").read().replace('\n','').encode() + append, "big")
+secret = ''.join([random.choice(alphabet) for _ in range(32)])
 
 p = int.from_bytes(hashlib.sha512((secret + "1").encode()).digest(), "big")
 q = int.from_bytes(hashlib.sha512((secret + "2").encode()).digest(), "big")
