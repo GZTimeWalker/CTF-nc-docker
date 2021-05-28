@@ -4,8 +4,9 @@ import random
 import os
 import hashlib
 import math
+import time
 
-flag = int.from_bytes(open("flag", "rb").read(), "big")
+flag = int.from_bytes(open("flag", "rb").read() + hashlib.sha256(str(time.time()).encode()), "big")
 secret = "43c5cf58ed8872cbbfb9625f0dcaf6e0"
 
 p = int.from_bytes(hashlib.sha512((secret + "1").encode()).digest(), "big")

@@ -1,5 +1,9 @@
 import os
 import json
+import string
+import random
+
+alphabet = sorted(string.digits + string.ascii_letters)
 
 CONFIG = {
     "mirrors_base_url": "mirrors.tuna.tsinghua.edu.cn",
@@ -9,6 +13,10 @@ CONFIG = {
 def init():
     if not os.path.exists('tmp'):
         os.makedirs('tmp')
+    else:
+        for root, dirs, files in os.walk('tmp'):
+            for file in files:
+                os.remove(os.path.join(root,file))
 
     if not os.path.exists('problems'):
         os.makedirs('problems')
@@ -40,7 +48,10 @@ def get_problems():
                         f.write(default_config.read())
             else:
                 with open(os.path.join(root, problem, 'config.json'),'r', encoding='utf-8') as f:
-                    p = {'name': problem}
+                    p = {
+                        'name': problem,
+                        'dir': ''.join([random.choice(alphabet) for _ in range(16)])
+                    }
                     p.update(json.load(f))
                     problems.append(p)
     return problems
@@ -83,12 +94,12 @@ def generate_dockerfile(problems):
             dockerfile_data['copy_problem_cmd'] += f"# ==> for {problem['name']}\n"
             if problem['all_copy']:
                 for item in get_all_files(os.path.join('problems',problem['name'])):
-                    dockerfile_data['copy_problem_cmd'] += f"COPY {item} /home/ctf/{item.replace('problems/','')}\n"
+                    dockerfile_data['copy_problem_cmd'] += f"COPY {item} /home/ctf/{item.replace('problems/','').replace(problem['name'], problem['dir'])}\n"
             else:
                 for item in problem['copy_files']:
-                    dockerfile_data['copy_problem_cmd'] += f"COPY problems/{problem['name']}/{item} /home/ctf/{problem['name']}/{item}\n"
+                    dockerfile_data['copy_problem_cmd'] += f"COPY problems/{problem['name']}/{item} /home/ctf/{problem['dir']}/{item}\n"
 
-        script = f"cd /home/ctf/{problem['name']}\n"
+        script = f"cd /home/ctf/{problem['dir']}\n"
 
         if len(problem['echo_msg']) > 0:
             script += f"echo \'{(' ' + problem['name'] + ' ').center(60,'=')}\'\n"
@@ -101,13 +112,13 @@ def generate_dockerfile(problems):
 
         script += f"{problem['launch']} {' '.join(problem['args'])}\n"
 
-        with open(f"tmp/{problem['name']}.sh",'wb') as f:
+        with open(f"tmp/{problem['dir']}.sh",'wb') as f:
             f.write(script.encode())
 
-        dockerfile_data['run_scripts'] += f"COPY tmp/{problem['name']}.sh /home/ctf/run/{problem['name']}.sh\n"
+        dockerfile_data['run_scripts'] += f"COPY tmp/{problem['dir']}.sh /home/ctf/run/{problem['dir']}.sh\n"
 
-        dockerfile_data['chmod_cmd'] += f"RUN chmod 755 /home/ctf/run/{problem['name']}.sh "
-        dockerfile_data['chmod_cmd'] += f"&& chmod -R 755 /home/ctf/{problem['name']}\n"
+        dockerfile_data['chmod_cmd'] += f"RUN chmod 755 /home/ctf/run/{problem['dir']}.sh "
+        dockerfile_data['chmod_cmd'] += f"&& chmod -R 755 /home/ctf/{problem['dir']}\n"
 
     with open('template/Dockerfile','r') as f:
         template = f.read()
@@ -127,7 +138,7 @@ def generate_xinetd(problems):
             if not problem['enable']:
                 continue
 
-            f.write((template % (port, problem['name'])).encode())
+            f.write((template % (port, problem['dir'])).encode())
             f.write(b'\n\n')
             port = port + 1
 
@@ -158,8 +169,6 @@ if __name__ == "__main__":
     generate_dockerfile(problems)
     generate_xinetd(problems)
     generate_dockercompose(problems)
-
-    os.system('docker compose up -d --build')
 
     port = CONFIG['port_range_start']
     for problem in problems:

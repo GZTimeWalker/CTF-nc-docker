@@ -81,4 +81,8 @@ CTF中netcat题目有关docker的相关构造文件。
 
   Hackergame2020题目，math题目类型。
 
+- `cosmic_ray_simulator`
+
+  Hackergame2020题目，pwn题目类型。
+
 - 后期更新...
