@@ -85,6 +85,10 @@ CTF中netcat题目有关docker的相关构造文件。
 
   Hackergame2020题目，pwn题目类型。
 
+- `self_repeating_repeater`
+
+  Hackergame2020题目，misc题目类型。
+
 - 后期更新...
 
 ## 注意事项

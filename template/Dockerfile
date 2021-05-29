@@ -26,8 +26,8 @@ RUN mkdir /home/ctf/assets/
 {run_scripts}
 
 # chown & chmod
-RUN chown -R root:ctf /home/ctf
-RUN chmod -R 711 /home/ctf && chmod 711 /home
+RUN chown -R root:root /home
+RUN chmod -R 711 /home
 
 {chmod_cmd}
 

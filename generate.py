@@ -40,20 +40,19 @@ def init():
 
 def get_problems():
     problems = []
-    for root, dirs, _ in os.walk('problems'):
-        for problem in dirs:
-            if not os.path.exists(os.path.join(root, problem, 'config.json')):
-                with open('template/config.json','r') as default_config:
-                    with open(os.path.join(root, problem, 'config.json'),'w') as f:
-                        f.write(default_config.read())
-            else:
-                with open(os.path.join(root, problem, 'config.json'),'r', encoding='utf-8') as f:
-                    p = {
-                        'name': problem,
-                        'dir': ''.join([random.choice(alphabet) for _ in range(16)])
-                    }
-                    p.update(json.load(f))
-                    problems.append(p)
+    for problem in os.listdir('problems'):
+        if not os.path.exists(os.path.join('problems', problem, 'config.json')):
+            with open('template/config.json','r') as default_config:
+                with open(os.path.join('problems', problem, 'config.json'),'w') as f:
+                    f.write(default_config.read())
+        else:
+            with open(os.path.join('problems', problem, 'config.json'),'r', encoding='utf-8') as f:
+                p = {
+                    'name': problem,
+                    'dir': ''.join([random.choice(alphabet) for _ in range(16)])
+                }
+                p.update(json.load(f))
+                problems.append(p)
     return problems
 
 def get_all_files(path):
@@ -102,13 +101,17 @@ def generate_dockerfile(problems):
         script = f"cd /home/ctf/{problem['dir']}\n"
 
         if len(problem['echo_msg']) > 0:
-            script += f"echo \'{(' ' + problem['name'] + ' ').center(60,'=')}\'\n"
+            script += "echo \'\\e[32m{}\\e[0m\'\n".format((' \\e[33m' + problem['name'] + ' \\e[32m').center(72,'='))
+
+            script += "echo \'\\e[32m!!!  \\e[31m此环境为测试训练环境，安全性较弱，请勿执行恶意代码  \\e[32m!!!\\e[0m\'\n"
+            script += "echo \'\\e[32m!!!   \\e[31mDO NOT EXECUTE HARMFUL CODE IN THIS TRAINING ENV   \\e[32m!!!\\e[0m\'\n"
+            script += "echo \'\\e[32m{}\\e[0m\'\n".format('=' * 60)
 
             for item in problem['echo_msg']:
                 script += f"echo \'{item}\'\n"
 
-            script += f"echo \'{'=' * 60}\'\n"
-            script += f"echo \'\'\n"
+            script += "echo \'\\e[32m{}\\e[0m\'\n".format('=' * 60)
+            script += "echo \'\'\n"
 
         script += f"{problem['launch']} {' '.join(problem['args'])}\n"
 
