@@ -5,3 +5,7 @@ services:
     restart: always
     ports:
       %s
+networks:
+  default:
+    external:
+      name: bridge
