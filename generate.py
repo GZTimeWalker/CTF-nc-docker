@@ -13,8 +13,8 @@ CONFIG = {
 }
 
 def init():
-    if not os.path.exists('tmp'):
-        os.makedirs('tmp')
+    if not os.path.exists('tmp/run'):
+        os.makedirs('tmp/run')
     else:
         for root, dirs, files in os.walk('tmp'):
             for file in files:
@@ -73,11 +73,13 @@ def get_all_files(path):
 def generate_dockerfile(problems):
     dockerfile_data = {
         'mirrors_base_url': CONFIG['mirrors_base_url'],
-        'apt_requirements': '',
         'extra_cmd': '',
         'copy_problem_cmd': '',
-        'run_scripts': '',
-        'chmod_cmd': ''
+        'copy_dirs': [],
+        'chmod_cmd': '',
+        'chmod_cmds': [],
+        'pip_requirements': '',
+        'pip_list': [],
     }
 
     for problem in problems:
@@ -85,9 +87,7 @@ def generate_dockerfile(problems):
         if not problem['enable']:
             continue
 
-        if len(problem['apt_requirements']) > 0:
-            dockerfile_data['apt_requirements'] += f"# ==> for {problem['name']}\n"
-            dockerfile_data['apt_requirements'] += f"RUN apt -y install {' '.join(problem['apt_requirements'])}\n"
+        dockerfile_data['pip_list'] += problem['pip_requirements']
 
         if len(problem['extra_cmd']) > 0:
             dockerfile_data['extra_cmd'] += f"# ==> for {problem['name']}\n"
@@ -122,13 +122,16 @@ def generate_dockerfile(problems):
 
         script += f"{problem['launch']} {' '.join(problem['args'])}\n"
 
-        with open(f"tmp/{problem['dir']}.sh",'wb') as f:
+        with open(f"tmp/run/{problem['dir']}.sh",'wb') as f:
             f.write(script.encode())
 
-        dockerfile_data['run_scripts'] += f"COPY tmp/{problem['dir']}.sh /home/ctf/run/{problem['dir']}.sh\n"
+        dockerfile_data['chmod_cmds'].append(f"chmod 755 /home/ctf/run/{problem['dir']}.sh")
+        dockerfile_data['chmod_cmds'].append(f"chmod -R 755 /home/ctf/{problem['dir']}")
 
-        dockerfile_data['chmod_cmd'] += f"RUN chmod 755 /home/ctf/run/{problem['dir']}.sh "
-        dockerfile_data['chmod_cmd'] += f"&& chmod -R 755 /home/ctf/{problem['dir']}\n"
+    if len(dockerfile_data['pip_list']) > 0:
+        dockerfile_data['pip_requirements'] += f"RUN python -m pip install --no-cache-dir {' '.join(dockerfile_data['pip_list'])}"
+
+    dockerfile_data['chmod_cmd'] += "RUN " + ' && \\\n '.join(dockerfile_data['chmod_cmds'])
 
     with open('template/Dockerfile','r') as f:
         template = f.read()

@@ -1,20 +1,23 @@
-FROM ubuntu:20.04
+FROM python:slim as base
+
+ENV TZ Asia/Shanghai
 ENV LANG C.UTF-8
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN sed -i s@/archive.ubuntu.com/@/{mirrors_base_url}/@g /etc/apt/sources.list
 
-RUN useradd -m ctf
+RUN apt update && \
+  apt install -y --no-install-recommends xinetd && \
+  apt clean && \
+  rm -rf /var/lib/apt/lists/*
 
-RUN apt update && apt -y upgrade
-RUN apt install -y xinetd python3
-
-# apt requirements
-{apt_requirements}
+# pip requirements
+{pip_requirements}
 
 # extra command
 {extra_cmd}
 
-RUN rm -rf /var/lib/apt/lists/ && rm -rf /root/.cache && apt autoclean && rm -rf /tmp/* /var/lib/apt/* /var/cache/* /var/log/*
+RUN useradd -m ctf
 
 # copy problem
 {copy_problem_cmd}
@@ -23,12 +26,10 @@ RUN mkdir /home/ctf/run/
 RUN mkdir /home/ctf/assets/
 RUN mkdir /home/ctf/files/
 
-# run scripts
-{run_scripts}
+COPY tmp/run /home/ctf/run
 
 # chown & chmod
-RUN chown -R root:root /home
-RUN chmod -R 711 /home
+RUN chown -R root:root /home && chmod -R 711 /home
 
 {chmod_cmd}
 
