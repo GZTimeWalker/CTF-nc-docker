@@ -29,9 +29,17 @@
       rel="stylesheet"
     />
     <style>
-      *::-webkit-scrollbar {width: 8px;height: 8px;}
-      *::-webkit-scrollbar-thumb {background: rgba(255, 255, 255, .1);border-radius: 4px;}
-      *::-webkit-scrollbar-track {background-color: transparent;}
+      *::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      *::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+      }
+      *::-webkit-scrollbar-track {
+        background-color: transparent;
+      }
       .bd-placeholder-img {
         font-size: 1.125rem;
         text-anchor: middle;
@@ -178,7 +186,7 @@
       }
 
       .table-box {
-        margin: 2em;
+        margin: 2em auto 1em auto;
         background-color: rgba(255, 255, 255, 0.07);
         padding: 1em;
         border-radius: 13px;
@@ -238,6 +246,11 @@
             </tbody>
           </table>
         </div>
+        <div style="text-align: center">
+          <p>
+            Download libc: <code>http://<span class="host"></span>/libc</code>
+          </p>
+        </div>
       </main>
 
       <footer class="mastfoot mt-auto">
@@ -248,8 +261,8 @@
     </div>
     <script>
       $(() => {
-        hostname = window.location.hostname;
-        $(".hostname").text("nc " + hostname + " ");
+        $(".hostname").text(window.location.hostname);
+        $(".host").text(window.location.host);
       });
     </script>
   </body>
