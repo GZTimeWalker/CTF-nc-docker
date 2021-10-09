@@ -144,8 +144,26 @@ def generate_start_sh():
     with open('template/start.sh','r') as f:
         template = f.read()
 
-    with open('start.sh','wb') as f:
+    with open('tmp/start.sh','wb') as f:
         f.write(template.format(**start_sh_data).encode())
+
+def generate_index(problems):
+    port = CONFIG['port_range_start']
+    index_data = ""
+    for problem in problems:
+
+        if not problem['enable']:
+            continue
+
+        row = f'<tr><td>{problem["name"]}</td><td><code><span class="hostname"></span>{port}</code></td></tr>'
+        port = port + 1
+        index_data += row + '\n'
+
+    with open('template/index.html','r') as f:
+        template = f.read()
+
+    with open('tmp/index.html','wb') as f:
+        f.write(template.replace('{problems_trs}', index_data).encode())
 
 def generate_xinetd(problems):
     port = CONFIG['port_range_start']
@@ -191,6 +209,7 @@ if __name__ == "__main__":
         exit(1)
 
     generate_start_sh()
+    generate_index(problems)
     generate_dockerfile(problems)
     generate_xinetd(problems)
     generate_dockercompose(problems)

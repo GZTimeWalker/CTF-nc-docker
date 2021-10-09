@@ -34,7 +34,9 @@ RUN chmod -R 711 /home
 
 COPY download /home/ctf/files
 COPY xinetd /etc/xinetd.d/ctf
-COPY start.sh /
+COPY tmp/start.sh /
+COPY tmp/index.html /home/ctf/files
+
 RUN chmod +x /start.sh
 
 WORKDIR /

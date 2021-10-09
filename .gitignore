@@ -3,7 +3,6 @@
 Dockerfile
 docker-compose.yml
 xinetd
-start.sh
 
 tmp/*
 

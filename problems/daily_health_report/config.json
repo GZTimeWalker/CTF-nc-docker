@@ -1,0 +1,11 @@
+{
+  "enable": true,
+  "apt_requirements": [],
+  "all_copy": true,
+  "launch": "./dailyhealthreport",
+  "args": [],
+  "extra_cmd": [],
+  "copy_files": [],
+  "echo_msg": ["记得要每日健康申报哦~"],
+  "download_file_name": "dailyhealthreport"
+}

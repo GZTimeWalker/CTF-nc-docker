@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <title>CTF nc docker</title>
+
+    <!-- Bootstrap core CSS -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.staticfile.org/twitter-bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.staticfile.org/font-awesome/5.15.2/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400;1,700"
+      rel="stylesheet"
+    />
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      /*
+      * Globals
+      */
+
+      /* Links */
+      a,
+      a:focus,
+      a:hover {
+        color: #fff;
+      }
+
+      /* Custom default button */
+      .btn-secondary,
+      .btn-secondary:hover,
+      .btn-secondary:focus {
+        color: #252525;
+        text-shadow: none; /* Prevent inheritance from `body` */
+        background-color: #fff;
+        border: 0.05rem solid #fff;
+      }
+
+      html,
+      body {
+        height: 100%;
+        background-color: #252525;
+      }
+
+      body {
+        display: -ms-flexbox;
+        display: flex;
+        color: #fff;
+        font-family: "JetBrains Mono", "Microsoft YaHei", sans-serif;
+        text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.5);
+      }
+
+      .cover-container {
+        max-width: 48em;
+      }
+
+      .masthead {
+        margin-bottom: 2rem !important;
+      }
+
+      .masthead-brand {
+        margin-bottom: 1rem;
+        font-size: 36px;
+      }
+
+      .nav-masthead .nav-link {
+        padding: 0.25rem 0;
+        font-weight: 600;
+        font-size: 24px;
+        color: #888;
+        background-color: transparent;
+        border-bottom: 0.25rem solid transparent;
+      }
+
+      .nav-masthead .nav-link:hover,
+      .nav-masthead .nav-link:focus {
+        transition: all 0.25s;
+        color: #ddd;
+        border-bottom-color: #ddd;
+      }
+
+      .nav-masthead .nav-link + .nav-link {
+        margin-left: 2rem;
+      }
+
+      .nav-masthead .active {
+        color: #fff;
+        border-bottom-color: #fff;
+      }
+
+      .fn {
+        display: none;
+      }
+
+      @media (min-width: 48em) {
+        .masthead-brand {
+          font-size: 32px;
+          float: left;
+        }
+        .nav-masthead {
+          float: right;
+        }
+        .fn {
+          display: inline;
+        }
+        .nav-masthead .nav-link {
+          font-size: 16px;
+          margin-left: 1rem;
+        }
+      }
+
+      .cover {
+        text-align: center;
+        padding: 0 1.5rem;
+      }
+      .cover .btn-lg {
+        padding: 0.75rem 1.25rem;
+        font-weight: 700;
+      }
+
+      .mastfoot {
+        color: #888;
+      }
+
+      .logo {
+        max-width: 20rem;
+        width: 60%;
+        transition: all 0.25s;
+      }
+
+      .logo:hover {
+        box-shadow: #888;
+        transform: scale(1.2) rotate(-30deg);
+      }
+
+      .cover-heading {
+        font-size: 32px;
+        color: #ddd;
+        transition: all 0.25s;
+        line-height: 3.3rem;
+      }
+
+      .cover-heading:hover {
+        color: #5887fc;
+        transform: scale(1.2);
+      }
+
+      .table-box {
+        margin: 2em;
+        background-color: rgba(255, 255, 255, 0.07);
+        padding: 1em;
+        border-radius: 13px;
+      }
+
+      .table-box > table {
+        width: 80%;
+        border-top: 1.2pt solid;
+        border-bottom: 1.2pt solid;
+        font-size: 14pt;
+        text-align: center;
+        page-break-inside: avoid;
+        display: inline-table !important;
+      }
+
+      .table-box > table > tbody > tr > td {
+        border: none;
+        padding: 7px;
+      }
+      .table-box > table > tbody > tr {
+        border: none;
+        padding: 7px;
+      }
+
+      .table-box > table > thead {
+        border-bottom: 0.75pt solid;
+        font-size: 12pt;
+        height: 3em;
+      }
+
+      .table-box > table th {
+        border: none;
+      }
+    </style>
+  </head>
+  <body class="text-center">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+      <header class="masthead mb-auto">
+        <div class="inner">
+          <h3 class="masthead-brand">CTF nc docker</h3>
+        </div>
+      </header>
+
+      <main role="main" class="inner cover">
+        <h3>Problem list</h3>
+        <div class="cover-container d-flex w-100 mx-auto flex-column table-box">
+          <table align="center">
+            <thead>
+              <tr>
+                <th>Problem Name</th>
+                <th>Netcat Command</th>
+              </tr>
+            </thead>
+            <tbody>
+              {problems_trs}
+            </tbody>
+          </table>
+        </div>
+      </main>
+
+      <footer class="mastfoot mt-auto">
+        <div class="inner">
+          <p><strong>By @GZTimeWalker</strong></p>
+        </div>
+      </footer>
+    </div>
+    <script>
+      $(() => {
+        hostname = window.location.hostname;
+        $(".hostname").text("nc " + hostname + " ");
+      });
+    </script>
+  </body>
+</html>
