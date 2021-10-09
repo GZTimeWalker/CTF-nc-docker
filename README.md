@@ -15,13 +15,19 @@ CTF中netcat题目有关docker的相关构造文件。
 ```json
 {
     "mirrors_base_url": "mirrors.tuna.tsinghua.edu.cn",
-    "port_range_start": 65100
+    "port_range_start": 65100,
+    "download_port": 65199,
+    "hostname": "localhost"
 }
 ```
 
 `mirrors_base_url`: Ubuntu软件源
 
 `port_range_start`: 起始端口号
+
+`download_port`: 文件下载服务所开放的端口
+
+`hostname`: 访问该容器的主机名
 
 ### `config.json`
 
@@ -33,7 +39,8 @@ CTF中netcat题目有关docker的相关构造文件。
     "args": ["-u","./src.py"],
     "extra_cmd": [],
     "copy_files": [],
-    "echo_msg": []
+    "echo_msg": [],
+    "download_file_name": ""
 }
 ```
 
@@ -49,7 +56,9 @@ CTF中netcat题目有关docker的相关构造文件。
 
 `copy_files`: 当不全部拷贝题目文件时，需要拷贝的文件 (相对于题目目录的路径)
 
-`echo_msg`: 执行程序前输出的说明。
+`echo_msg`: 执行程序前输出的说明
+
+`download_file_name`: 提供需要下载的题目文件
 
 ## 构建和运行
 
