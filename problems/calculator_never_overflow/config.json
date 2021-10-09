@@ -1,10 +1,10 @@
 {
   "enable": true,
-  "apt_requirements": ["pip"],
+  "pip_requirements": ["sympy"],
   "all_copy": true,
   "launch": "python3",
   "args": ["-u", "./src.py"],
-  "extra_cmd": ["pip install --isolated sympy"],
+  "extra_cmd": [],
   "copy_files": [],
   "echo_msg": [
     "某同学写了一个简单的计算器程序，支持加、减、乘、除、乘方、开方运算。",

@@ -1,10 +1,10 @@
 {
   "enable": true,
-  "apt_requirements": [],
+  "pip_requirements": ["pycryptodome"],
   "all_copy": true,
   "launch": "python3",
   "args": ["-u", "./entry.py"],
-  "extra_cmd": ["python3 -m pip install -U pycryptodome"],
+  "extra_cmd": [],
   "copy_files": [],
   "echo_msg": [
     "为了避开 Eve 同学的干扰，某一天 Alice 悄悄找到了你，想让你帮忙传送一些加密消息给 Bob。",

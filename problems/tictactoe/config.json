@@ -1,6 +1,6 @@
 {
   "enable": true,
-  "apt_requirements": [],
+  "pip_requirements": [],
   "all_copy": true,
   "launch": "./tictactoe",
   "args": [],
