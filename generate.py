@@ -25,6 +25,9 @@ def init():
         print('Please put your problems in ./problems/')
         print('You can find examples at https://github.com/GZTimeWalker/CTF-nc-docker')
 
+    if not os.path.exists('download'):
+        os.makedirs('problems')
+
     if not os.path.exists('template'):
         print('No template available!')
         exit(1)
@@ -74,8 +77,7 @@ def generate_dockerfile(problems):
         'extra_cmd': '',
         'copy_problem_cmd': '',
         'run_scripts': '',
-        'chmod_cmd': '',
-        'download_port': CONFIG['download_port']
+        'chmod_cmd': ''
     }
 
     for problem in problems:
@@ -101,7 +103,7 @@ def generate_dockerfile(problems):
                 for item in problem['copy_files']:
                     dockerfile_data['copy_problem_cmd'] += f"COPY problems/{problem['name']}/{item} /home/ctf/{problem['dir']}/{item}\n"
 
-        script = f"cd /home/ctf/{problem['dir']}\n"
+        script = f"#!/bin/sh\n\ncd /home/ctf/{problem['dir']}\n"
 
         if len(problem['echo_msg']) > 0:
             script += "echo \'\\e[32m{}\\e[0m\'\n".format((' \\e[33m' + problem['name'] + ' \\e[32m').center(72,'='))
@@ -131,8 +133,19 @@ def generate_dockerfile(problems):
     with open('template/Dockerfile','r') as f:
         template = f.read()
 
-    with open('Dockerfile','w') as f:
-        f.write(template.format(**dockerfile_data))
+    with open('Dockerfile','wb') as f:
+        f.write(template.format(**dockerfile_data).encode())
+
+def generate_start_sh():
+    start_sh_data = {
+        'download_port': CONFIG['download_port']
+    }
+
+    with open('template/start.sh','r') as f:
+        template = f.read()
+
+    with open('start.sh','wb') as f:
+        f.write(template.format(**start_sh_data).encode())
 
 def generate_xinetd(problems):
     port = CONFIG['port_range_start']
@@ -177,11 +190,16 @@ if __name__ == "__main__":
         print('No problem found!')
         exit(1)
 
+    generate_start_sh()
     generate_dockerfile(problems)
     generate_xinetd(problems)
     generate_dockercompose(problems)
 
-    os.system('docker-compose up --build -d')
+    ret = os.system('docker-compose up --build -d')
+
+    if ret != 0:
+        print('Error occured, exiting...')
+        exit(0)
 
     port = CONFIG['port_range_start']
     for problem in problems:
