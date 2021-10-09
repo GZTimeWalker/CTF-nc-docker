@@ -6,5 +6,6 @@
     "args": ["-u","./src.py"],
     "extra_cmd": [],
     "copy_files": [],
-    "echo_msg": []
+    "echo_msg": [],
+    "download_file_name": ""
 }

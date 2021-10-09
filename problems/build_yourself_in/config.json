@@ -1,10 +1,11 @@
 {
-    "enable": true,
-    "apt_requirements": [],
-    "all_copy": true,
-    "launch": "python3",
-    "args": ["-u","./src.py"],
-    "extra_cmd": [],
-    "copy_files": [],
-    "echo_msg": ["Can you build yourself in?"]
+  "enable": true,
+  "apt_requirements": [],
+  "all_copy": true,
+  "launch": "python3",
+  "args": ["-u", "./src.py"],
+  "extra_cmd": [],
+  "copy_files": [],
+  "echo_msg": ["Can you build yourself in?"],
+  "download_file_name": ""
 }

@@ -21,6 +21,9 @@ RUN rm -rf /var/lib/apt/lists/ && rm -rf /root/.cache && apt autoclean && rm -rf
 
 RUN mkdir /home/ctf/run/
 RUN mkdir /home/ctf/assets/
+RUN mkdir /home/ctf/files/
+
+COPY ./download/ /home/ctf/files/
 
 # run scripts
 {run_scripts}
@@ -31,6 +34,11 @@ RUN chmod -R 711 /home
 
 {chmod_cmd}
 
+# download service
+WORKDIR /home/ctf/files
+RUN nohup python3 -m http.server {download_port} > /var/log/file.log 2>&1 &
+
+WORKDIR /
 COPY xinetd /etc/xinetd.d/ctf
 
 CMD ["xinetd","-dontfork"]

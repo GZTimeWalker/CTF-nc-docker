@@ -8,6 +8,8 @@ alphabet = sorted(string.digits + string.ascii_letters)
 CONFIG = {
     "mirrors_base_url": "mirrors.tuna.tsinghua.edu.cn",
     "port_range_start": 65100,
+    "download_port": 65199,
+    "hostname": "localhost"
 }
 
 def init():
@@ -72,7 +74,8 @@ def generate_dockerfile(problems):
         'extra_cmd': '',
         'copy_problem_cmd': '',
         'run_scripts': '',
-        'chmod_cmd': ''
+        'chmod_cmd': '',
+        'download_port': CONFIG['download_port']
     }
 
     for problem in problems:
@@ -110,6 +113,8 @@ def generate_dockerfile(problems):
             for item in problem['echo_msg']:
                 script += f"echo \'{item}\'\n"
 
+            if problem['download_file_name'] != "":
+                script += f"echo \'题目附件：http://{CONFIG['hostname']}:{CONFIG['download_port']}/{problem['download_file_name']}\'\n"
             script += "echo \'\\e[32m{}\\e[0m\'\n".format('=' * 60)
             script += "echo \'\'\n"
 
@@ -158,6 +163,9 @@ def generate_dockercompose(problems):
 
         data += f"- {port}:{port}\n      "
         port = port + 1
+
+    port = CONFIG['download_port']
+    data += f"- {port}:{port}\n      "
 
     with open('docker-compose.yml','w') as f:
         f.write(template % data)
