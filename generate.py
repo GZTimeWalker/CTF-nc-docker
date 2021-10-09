@@ -158,7 +158,7 @@ def generate_index(problems):
         if not problem['enable']:
             continue
 
-        row = f'<tr><td>{problem["name"]}</td><td><code><span class="hostname"></span>{port}</code></td></tr>'
+        row = f'<tr><td>{problem["name"]}</td><td><code>nc <span class="hostname"></span> {port}</code></td></tr>'
         port = port + 1
         index_data += row + '\n'
 
