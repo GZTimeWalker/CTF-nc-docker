@@ -25,6 +25,8 @@ RUN useradd -m ctf
 RUN mkdir /home/ctf/run/
 RUN mkdir /home/ctf/assets/
 RUN mkdir /home/ctf/files/
+RUN cp /lib/x86_64-linux-gnu/libc-* /home/ctf/files && \
+  cp -ld /home/ctf/files/libc-* /home/ctf/files/libc
 
 COPY tmp/run /home/ctf/run
 
