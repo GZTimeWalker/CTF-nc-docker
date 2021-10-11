@@ -129,9 +129,9 @@ def generate_dockerfile(problems):
         dockerfile_data['chmod_cmds'].append(f"chmod -R 755 /home/ctf/{problem['dir']}")
 
     if len(dockerfile_data['pip_list']) > 0:
-        dockerfile_data['pip_requirements'] += f"RUN python -m pip install --no-cache-dir {' '.join(dockerfile_data['pip_list'])}"
+        dockerfile_data['pip_requirements'] = ' '.join(dockerfile_data['pip_list'])
 
-    dockerfile_data['chmod_cmd'] += "RUN " + ' && \\\n '.join(dockerfile_data['chmod_cmds'])
+    dockerfile_data['chmod_cmd'] = "RUN " + ' && \\\n '.join(dockerfile_data['chmod_cmds'])
 
     with open('template/Dockerfile','r') as f:
         template = f.read()
