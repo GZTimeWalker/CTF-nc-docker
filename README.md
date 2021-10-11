@@ -33,18 +33,21 @@ CTF中netcat题目有关docker的相关构造文件。
 
 ```json
 {
-    "apt_requirements": [],
+    "enable": true,
+    "pip_requirements": [],
     "all_copy": true,
     "launch": "python3",
-    "args": ["-u","./src.py"],
+    "args": ["-u", "./src.py"],
     "extra_cmd": [],
     "copy_files": [],
-    "echo_msg": [],
+    "echo_msg": ["Write some descr here."],
     "download_file_name": ""
 }
 ```
 
-`apt_requirements`: 需要使用 apt 安装的包
+`enable`: 是否启用该题目
+
+`pip_requirements`: 需要使用 pip 安装的包
 
 `all_copy`: 是否拷贝题目目录全部文件
 
@@ -73,26 +76,32 @@ CTF中netcat题目有关docker的相关构造文件。
 - `tictactoe`
 
   Hackergame2020题目，pwn题目类型。
+  使用栈溢出进行执行流控制，同时可通过构造 rop chain 进行 getshell。无 `canary` 栈溢出防护。
 
 - `string_tools`
 
   Hackergame2020题目，misc题目类型。
+  一些在字符串格式转换和编解码中的小技巧。
 
 - `calculator_never_overflow`
 
   Hackergame2020题目，math题目类型。
+  较为基础的一道密码学题目，[可见这里](https://crypto.stackexchange.com/questions/34061/factoring-large-n-given-oracle-to-find-square-roots-modulo-n)
 
 - `theorem_prover`
 
   Hackergame2020题目，math题目类型。
+  搜索与暴力
 
 - `unboxing_simulator`
 
   Hackergame2020题目，math题目类型。
+  建议手写 bfcode
 
 - `cosmic_ray_simulator`
 
   Hackergame2020题目，pwn题目类型。
+  这是无穷的宇宙射线。
 
 - `self_repeating_repeater`
 
