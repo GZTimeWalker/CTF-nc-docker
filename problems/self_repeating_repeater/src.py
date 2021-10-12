@@ -29,13 +29,13 @@ if __name__ == "__main__":
 
     print("Checking reversed(code) == output")
     if code[::-1] == output:
-        print(open("flag/flag1").read())
+        print(open("flag1").read())
     else:
         print("Failed!")
     print()
 
     print("Checking sha256(code) == output")
     if hashlib.sha256(code.encode()).hexdigest() == output:
-        print(open("flag/flag2").read())
+        print(open("flag2").read())
     else:
         print("Failed!")

@@ -97,11 +97,11 @@ def generate_dockerfile(problems):
         if problem['all_copy'] or len(problem['copy_files']) > 0:
             dockerfile_data['copy_problem_cmd'] += f"# ==> for {problem['name']}\n"
             if problem['all_copy']:
-                for item in get_all_files(os.path.join('problems',problem['name'])):
-                    dockerfile_data['copy_problem_cmd'] += f"COPY {item} /home/ctf/{item.replace('problems/','').replace(problem['name'] + '/', problem['dir'] + '/')}\n"
+                items = get_all_files(os.path.join('problems',problem['name']))
             else:
-                for item in problem['copy_files']:
-                    dockerfile_data['copy_problem_cmd'] += f"COPY problems/{problem['name']}/{item} /home/ctf/{problem['dir']}/{item}\n"
+                items = [f"problems/{problem['name']}/" + i for i in problem['copy_files']]
+            dest = f"{problem['dir']}/"
+            dockerfile_data['copy_problem_cmd'] += f"COPY {' '.join(items)} {dest}\n"
 
         script = f"#!/bin/sh\n\ncd /home/ctf/{problem['dir']}\n"
 
