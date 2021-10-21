@@ -1,0 +1,11 @@
+{
+  "enable": true,
+  "pip_requirements": [],
+  "all_copy": true,
+  "launch": "./pwn",
+  "args": [],
+  "extra_cmd": [],
+  "copy_files": [],
+  "echo_msg": ["超正常的baby模拟器"],
+  "download_file_name": "quietbaby"
+}
