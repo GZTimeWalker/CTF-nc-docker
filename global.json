@@ -2,5 +2,7 @@
     "mirrors_base_url": "mirrors.tuna.tsinghua.edu.cn",
     "port_range_start": 65100,
     "download_port": 65199,
-    "hostname": "localhost"
+    "hostname": "localhost",
+    "download_server": true,
+    "show_echo_msg": true
 }

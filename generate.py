@@ -9,7 +9,9 @@ CONFIG = {
     "mirrors_base_url": "mirrors.tuna.tsinghua.edu.cn",
     "port_range_start": 65100,
     "download_port": 65199,
-    "hostname": "localhost"
+    "hostname": "localhost",
+    "download_server": True,
+    "show_echo_msg": True
 }
 
 def init():
@@ -105,7 +107,7 @@ def generate_dockerfile(problems):
 
         script = f"#!/bin/sh\n\ncd /home/ctf/{problem['dir']}\n"
 
-        if len(problem['echo_msg']) > 0:
+        if CONFIG['show_echo_msg'] and len(problem['echo_msg']) > 0:
             script += "echo \'\\e[32m{}\\e[0m\'\n".format((' \\e[33m' + problem['name'] + ' \\e[32m').center(72,'='))
 
             script += "echo \'\\e[32m!!!  \\e[31m此环境为测试训练环境，安全性较弱，请勿执行恶意代码  \\e[32m!!!\\e[0m\'\n"
@@ -140,15 +142,15 @@ def generate_dockerfile(problems):
         f.write(template.format(**dockerfile_data).encode())
 
 def generate_start_sh():
-    start_sh_data = {
-        'download_port': CONFIG['download_port']
-    }
+    template = '#!/bin/sh\n\n'
 
-    with open('template/start.sh','r') as f:
-        template = f.read()
+    if CONFIG['download_server']:
+        template += 'cd /home/ctf/files\n'
+        template += f'nohup python3 -m http.server {CONFIG["download_port"]} > /var/log/file.log 2>&1 &\n'
 
+    template += 'cd / && xinetd -dontfork'
     with open('tmp/start.sh','wb') as f:
-        f.write(template.format(**start_sh_data).encode())
+        f.write(template.encode())
 
 def generate_index(problems):
     port = CONFIG['port_range_start']

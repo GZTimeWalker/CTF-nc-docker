@@ -17,7 +17,9 @@ CTF中netcat题目有关docker的相关构造文件。
     "mirrors_base_url": "mirrors.tuna.tsinghua.edu.cn",
     "port_range_start": 65100,
     "download_port": 65199,
-    "hostname": "localhost"
+    "hostname": "localhost",
+    "download_server": true,
+    "show_echo_msg": true
 }
 ```
 
@@ -28,6 +30,10 @@ CTF中netcat题目有关docker的相关构造文件。
 `download_port`: 文件下载服务所开放的端口
 
 `hostname`: 访问该容器的主机名
+
+`download_server`: 是否开启文件下载服务
+
+`show_echo_msg`: 显示题目信息
 
 ### `config.json`
 

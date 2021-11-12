@@ -20,6 +20,7 @@ RUN apt update && \
   rm -rf /var/lib/apt/lists/*
 
 # pip requirements
+RUN python -m pip install --no-cache-dir --upgrade pip
 RUN python -m pip install --no-cache-dir {pip_requirements}
 
 # extra command
