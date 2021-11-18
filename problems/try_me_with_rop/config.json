@@ -1,0 +1,11 @@
+{
+  "enable": true,
+  "pip_requirements": [],
+  "all_copy": true,
+  "launch": "./rop_me",
+  "args": [],
+  "extra_cmd": [],
+  "copy_files": [],
+  "echo_msg": ["尝试获取 libc 的基址，并且构造 rop 吧！"],
+  "download_file_name": "rop_me"
+}
