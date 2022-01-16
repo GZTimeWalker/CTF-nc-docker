@@ -219,7 +219,7 @@ if __name__ == "__main__":
     generate_xinetd(problems)
     generate_dockercompose(problems)
 
-    ret = os.system('docker-compose up --compatibility --build -d')
+    ret = os.system('docker-compose --compatibility up --build -d')
 
     if ret != 0:
         print('Error occured, exiting...')
