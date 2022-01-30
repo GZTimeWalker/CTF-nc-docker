@@ -8,7 +8,7 @@ RUN useradd -m ctf && \
     mkdir /home/ctf/run/ && \
     mkdir /home/ctf/assets/ && \
     mkdir /home/ctf/files/ && \
-    sed -i s@/archive.ubuntu.com/@/{mirrors_base_url}/@g /etc/apt/sources.list && \
+    sed -i s@/deb.debian.org/@/{mirrors_base_url}/@g /etc/apt/sources.list && \
     cp /lib/x86_64-linux-gnu/libc-* /home/ctf/files && \
     cp -ld /home/ctf/files/libc-* /home/ctf/files/libc.so && \
     cp /lib/x86_64-linux-gnu/ld-linux* /home/ctf/files && \
