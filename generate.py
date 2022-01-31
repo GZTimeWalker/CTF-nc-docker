@@ -132,6 +132,8 @@ def generate_dockerfile(problems):
 
     if len(dockerfile_data['pip_list']) > 0:
         dockerfile_data['pip_requirements'] = ' '.join(dockerfile_data['pip_list'])
+    else:
+        dockerfile_data['pip_requirements'] = 'pip'
 
     dockerfile_data['chmod_cmd'] = "RUN " + ' && \\\n '.join(dockerfile_data['chmod_cmds'])
 
