@@ -24,7 +24,7 @@ CTF中netcat题目有关docker的相关构造文件。
 }
 ```
 
-`mirrors_base_url`: Ubuntu软件源
+`mirrors_base_url`: Debian软件源
 
 `port_range_start`: 起始端口号
 
