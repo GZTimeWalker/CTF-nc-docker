@@ -7,6 +7,7 @@ alphabet = sorted(string.digits + string.ascii_letters)
 
 CONFIG = {
     "mirrors_base_url": "mirrors.tuna.tsinghua.edu.cn",
+    "pypi_index_url": "https://pypi.tuna.tsinghua.edu.cn/simple",
     "port_range_start": 65100,
     "download_port": 65199,
     "hostname": "localhost",
@@ -76,6 +77,7 @@ def get_all_files(path):
 def generate_dockerfile(problems):
     dockerfile_data = {
         'mirrors_base_url': CONFIG['mirrors_base_url'],
+        'pypi_index': '' if CONFIG['pypi_index_url'] == '' else f"-i {CONFIG['pypi_index_url']}",
         'extra_cmd': '',
         'copy_problem_cmd': '',
         'copy_dirs': [],

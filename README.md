@@ -15,6 +15,7 @@ CTF中netcat题目有关docker的相关构造文件。
 ```json
 {
     "mirrors_base_url": "mirrors.tuna.tsinghua.edu.cn",
+    "pypi_index_url": "https://pypi.tuna.tsinghua.edu.cn/simple",
     "port_range_start": 65100,
     "download_port": 65199,
     "hostname": "localhost",
@@ -25,6 +26,8 @@ CTF中netcat题目有关docker的相关构造文件。
 ```
 
 `mirrors_base_url`: Debian软件源
+
+`pypi_index_url`: pypi 软件源
 
 `port_range_start`: 起始端口号
 

@@ -1,5 +1,6 @@
 {
     "mirrors_base_url": "mirrors.tuna.tsinghua.edu.cn",
+    "pypi_index_url": "https://pypi.tuna.tsinghua.edu.cn/simple",
     "port_range_start": 65100,
     "download_port": 65199,
     "hostname": "localhost",
