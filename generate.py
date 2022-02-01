@@ -61,7 +61,8 @@ def get_problems():
                     'dir': ''.join([random.choice(alphabet) for _ in range(16)])
                 }
                 p.update(json.load(f))
-                problems.append(p)
+                if p['enable']:
+                    problems.append(p)
     return problems
 
 def get_all_files(path):
@@ -88,9 +89,6 @@ def generate_dockerfile(problems):
     }
 
     for problem in problems:
-
-        if not problem['enable']:
-            continue
 
         dockerfile_data['pip_list'] += problem['pip_requirements']
 
@@ -161,10 +159,8 @@ def generate_start_sh():
 def generate_index(problems):
     port = CONFIG['port_range_start']
     index_data = ""
-    for problem in problems:
 
-        if not problem['enable']:
-            continue
+    for problem in problems:
 
         row = f'<tr><td>{problem["name"]}</td><td><code>nc <span class="hostname"></span> {port}</code></td></tr>'
         port = port + 1
@@ -185,9 +181,6 @@ def generate_xinetd(problems):
     with open('xinetd','wb') as f:
         for problem in problems:
 
-            if not problem['enable']:
-                continue
-
             f.write((template % (port, problem['dir'])).encode())
             f.write(b'\n\n')
             port = port + 1
@@ -198,11 +191,8 @@ def generate_dockercompose(problems):
 
     data = ''
     port = CONFIG['port_range_start']
-    for problem in problems:
 
-        if not problem['enable']:
-            continue
-
+    for _ in problems:
         data += f"- {port}:{port}\n      "
         port = port + 1
 
@@ -233,9 +223,6 @@ if __name__ == "__main__":
 
     port = CONFIG['port_range_start']
     for problem in problems:
-
-        if not problem['enable']:
-            continue
 
         print(f">>> [{port}] => {problem['name']}")
         port = port + 1
