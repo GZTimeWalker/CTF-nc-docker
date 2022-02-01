@@ -11,7 +11,8 @@ CONFIG = {
     "download_port": 65199,
     "hostname": "localhost",
     "download_server": True,
-    "show_echo_msg": True
+    "show_echo_msg": True,
+    "show_warn_msg": True
 }
 
 def init():
