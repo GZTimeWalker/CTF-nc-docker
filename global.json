@@ -4,5 +4,6 @@
     "download_port": 65199,
     "hostname": "localhost",
     "download_server": true,
-    "show_echo_msg": true
+    "show_echo_msg": true,
+    "show_warn_msg": true
 }

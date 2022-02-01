@@ -110,9 +110,10 @@ def generate_dockerfile(problems):
         if CONFIG['show_echo_msg'] and len(problem['echo_msg']) > 0:
             script += "echo \'\\e[32m{}\\e[0m\'\n".format((' \\e[33m' + problem['name'] + ' \\e[32m').center(72,'='))
 
-            script += "echo \'\\e[32m!!!  \\e[31m此环境为测试训练环境，安全性较弱，请勿执行恶意代码  \\e[32m!!!\\e[0m\'\n"
-            script += "echo \'\\e[32m!!!   \\e[31mDO NOT EXECUTE HARMFUL CODE IN THIS TRAINING ENV   \\e[32m!!!\\e[0m\'\n"
-            script += "echo \'\\e[32m{}\\e[0m\'\n".format('=' * 60)
+            if CONFIG['show_warn_msg']:
+                script += "echo \'\\e[32m!!!  \\e[31m此环境为测试训练环境，安全性较弱，请勿执行恶意代码  \\e[32m!!!\\e[0m\'\n"
+                script += "echo \'\\e[32m!!!   \\e[31mDO NOT EXECUTE HARMFUL CODE IN THIS TRAINING ENV   \\e[32m!!!\\e[0m\'\n"
+                script += "echo \'\\e[32m{}\\e[0m\'\n".format('=' * 60)
 
             for item in problem['echo_msg']:
                 script += f"echo \'{item}\'\n"
