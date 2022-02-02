@@ -123,7 +123,6 @@ def generate_dockerfile(problems):
     }
 
     for problem in problems:
-
         dockerfile_data['pip_list'] += problem['pip_requirements']
 
         if len(problem['extra_cmd']) > 0:
@@ -199,7 +198,6 @@ def generate_index(problems):
     index_data = ""
 
     for problem in problems:
-
         row = f'<tr><td>{problem["name"]}</td><td><code>nc <span class="hostname"></span> {port}</code></td></tr>'
         port = port + 1
         index_data += row
@@ -220,7 +218,6 @@ def generate_xinetd(problems):
 
     with open('xinetd','wb') as f:
         for problem in problems:
-
             problem_data = {
                 'port': port,
                 'problem_name': problem['name'],
@@ -264,6 +261,7 @@ def generate_dockercompose(problems):
 if __name__ == "__main__":
     init()
     problems = get_problems()
+
     if(len(problems) == 0):
         print('[!] No problem found!')
         exit(1)
@@ -280,13 +278,13 @@ if __name__ == "__main__":
 
     if ret != 0:
         print('[!] Error occured, exiting...')
-        exit(0)
+        exit(ret)
 
     print('[+] Successfully generated CTF-NC container.')
     print('[+] Your problems are now available at following ports:')
+
     port = CONFIG['port_range_start']
     for problem in problems:
-
         print(f" => [{port}] => {problem['name']}")
         port = port + 1
 
