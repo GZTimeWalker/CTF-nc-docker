@@ -29,8 +29,8 @@ def init():
         print('Please put your problems in ./problems/')
         print('You can find examples at https://github.com/GZTimeWalker/CTF-nc-docker')
 
-    if not os.path.exists('download'):
-        os.makedirs('problems')
+    if not os.path.exists('attachments'):
+        os.makedirs('attachments')
 
     if not os.path.exists('template'):
         print('No template available!')
