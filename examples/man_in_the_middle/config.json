@@ -10,5 +10,5 @@
     "为了避开 Eve 同学的干扰，某一天 Alice 悄悄找到了你，想让你帮忙传送一些加密消息给 Bob。",
     "当然，出于一些安全方面的考虑，Alice 想了几种方法在消息里加入了一些校验。"
   ],
-  "download_file_name": "MITM.zip"
+  "download_file_name": "examples/MITM.zip"
 }

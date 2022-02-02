@@ -7,5 +7,5 @@
   "extra_cmd": [],
   "copy_files": [],
   "echo_msg": ["超正常的baby模拟器"],
-  "download_file_name": "quietbaby"
+  "download_file_name": "examples/quietbaby"
 }
