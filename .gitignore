@@ -7,3 +7,4 @@ xinetd
 tmp/*
 
 !template/*
+problem/*
