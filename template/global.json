@@ -6,5 +6,10 @@
     "hostname": "localhost",
     "download_server": true,
     "show_echo_msg": true,
-    "show_warn_msg": true
+    "show_warn_msg": true,
+    "resource_limit": {
+        "enable": true,
+        "max_memory": "512M",
+        "max_cpu": "0.5"
+    }
 }

@@ -4,14 +4,9 @@ services:
     container_name: CTF_nc_docker
     build: .
     restart: always
-    deploy:
-      resources:
-        limits:
-          cpus: '1'
-          memory: 512M
     ports:
-      %s
-
+      {ports}
+    {resource_limit}
 
 networks:
   default:

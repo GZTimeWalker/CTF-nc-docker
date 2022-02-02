@@ -25,7 +25,12 @@ CTF 中 netcat 题目有关 Docker 的相关构造文件。
     "hostname": "localhost",
     "download_server": true,
     "show_echo_msg": true,
-    "show_warn_msg": true
+    "show_warn_msg": true,
+    "resource_limit": {
+        "enable": true,
+        "max_memory": "512M",
+        "max_cpu": "0.5"
+    }
 }
 ```
 
@@ -37,7 +42,10 @@ CTF 中 netcat 题目有关 Docker 的相关构造文件。
 - `download_server`: 是否开启文件下载服务
 - `show_echo_msg`: 显示题目信息
 - `show_warn_msg`: 显示警告信息
-
+- `resource_limit`: 运行时容器资源限制
+  - `enable`: 是否启用限制
+  - `max_memory`: 最大占用内存
+  - `max_cpu`: 最大占用CPU
 ### config.json
 
 ```json

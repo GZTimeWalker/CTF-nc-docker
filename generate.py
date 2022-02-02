@@ -13,7 +13,12 @@ CONFIG = {
     "hostname": "localhost",
     "download_server": True,
     "show_echo_msg": True,
-    "show_warn_msg": True
+    "show_warn_msg": True,
+    "resource_limit": {
+        "enable": True,
+        "max_memory": "512M",
+        "max_cpu": "0.5"
+    }
 }
 
 HELLO = r'''
@@ -226,23 +231,36 @@ def generate_xinetd(problems):
             port += 1
 
 def generate_dockercompose(problems):
+    dockercompose_data = {}
+
     print(f'[+] Generating docker-compose.yml...')
 
     with open('template/docker-compose.yml','r') as f:
         template = f.read()
 
-    data = ''
+    ports = ''
     port = CONFIG['port_range_start']
 
     for _ in problems:
-        data += f"- {port}:{port}\n      "
+        ports += f"- {port}:{port}\n      "
         port = port + 1
 
     port = CONFIG['download_port']
-    data += f"- {port}:{port}\n      "
+    ports += f"- {port}:{port}\n      "
+
+    dockercompose_data['ports'] = ports
+
+    res_lim = ''
+
+    if CONFIG['resource_limit']['enable']:
+        res_lim += 'deploy:\n      resources:\n        limits:\n'
+        res_lim += f'          cpus: \'{CONFIG["resource_limit"]["max_cpu"]}\'\n'
+        res_lim += f'          memory: \'{CONFIG["resource_limit"]["max_memory"]}\'\n'
+
+    dockercompose_data['resource_limit'] = res_lim
 
     with open('docker-compose.yml','w') as f:
-        f.write(template % data)
+        f.write(template.format(**dockercompose_data))
 
 if __name__ == "__main__":
     init()
