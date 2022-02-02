@@ -50,6 +50,8 @@ def init():
 def get_problems():
     problems = []
     for problem in os.listdir('problems'):
+        if not os.path.isdir(os.path.join('problems', problem)):
+            continue
         if not os.path.exists(os.path.join('problems', problem, 'config.json')):
             with open('template/config.json','r') as default_config:
                 with open(os.path.join('problems', problem, 'config.json'),'w') as f:
