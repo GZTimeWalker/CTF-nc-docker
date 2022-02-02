@@ -241,9 +241,9 @@ def generate_dockercompose(problems):
 
     ports = ''
     port = CONFIG['port_range_start']
-    ports += f'- "{port}-{port + len(problems) - 1}"\n      '
+    ports += f'- "{port}-{port + len(problems) - 1}:{port}-{port + len(problems) - 1}"\n      '
     port = CONFIG['download_port']
-    ports += f'- "{port}"'
+    ports += f'- "{port}:{port}"'
 
     dockercompose_data['ports'] = ports
 
