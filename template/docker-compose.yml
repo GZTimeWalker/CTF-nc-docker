@@ -1,6 +1,7 @@
 version: '3.7'
 services:
   nc_docker:
+    container_name: CTF_nc_docker
     build: .
     restart: always
     deploy:
