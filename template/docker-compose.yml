@@ -7,8 +7,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.01'
-          memory: 256M
+          cpus: '1'
+          memory: 512M
     ports:
       %s
 
