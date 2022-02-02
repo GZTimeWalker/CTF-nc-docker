@@ -6,6 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN useradd -m ctf && \
     mkdir /home/ctf/run/ && \
+    mkdir /var/log/ctf && \
     mkdir /home/ctf/assets/ && \
     mkdir /home/ctf/files/ && \
     sed -i s@/deb.debian.org/@/{mirrors_base_url}/@g /etc/apt/sources.list && \

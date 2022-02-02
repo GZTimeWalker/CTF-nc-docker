@@ -1,17 +1,21 @@
 service ctf
-{
+{{
     disable     = no
+    id          = {problem_name}
     socket_type = stream
     protocol    = tcp
     wait        = no
     user        = ctf
     type        = UNLISTED
-    port        = %d
+    port        = {port}
     bind        = 0.0.0.0
     server      = /bin/sh
-    server_args = /home/ctf/run/%s.sh
+    server_args = /home/ctf/run/{problem_alian}.sh
+    log_type    = FILE /var/log/ctf/{problem_name}.log 20971520 52428800
+    log_on_failure = HOST
+    log_on_success = PID HOST DURATION EXIT
     # safety options
     per_source  = 10 # the maximum instances of this service per source IP address
     rlimit_cpu  = 20 # the maximum number of CPU seconds that the service may use
     rlimit_as   = 100M # the Address Space resource limit for the service
-}
+}}

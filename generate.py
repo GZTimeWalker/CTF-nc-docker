@@ -84,7 +84,7 @@ def get_problems():
         else:
             with open(os.path.join('problems', problem, 'config.json'),'r', encoding='utf-8') as f:
                 p = {
-                    'name': problem,
+                    'name': problem.replace(' ','_').replace('-','_'),
                     'dir': ''.join([random.choice(alphabet) for _ in range(16)])
                 }
                 p.update(json.load(f))
@@ -215,9 +215,15 @@ def generate_xinetd(problems):
     with open('xinetd','wb') as f:
         for problem in problems:
 
-            f.write((template % (port, problem['dir'])).encode())
+            problem_data = {
+                'port': port,
+                'problem_name': problem['name'],
+                'problem_alian': problem['dir']
+            }
+
+            f.write(template.format(**problem_data).encode())
             f.write(b'\n\n')
-            port = port + 1
+            port += 1
 
 def generate_dockercompose(problems):
     print(f'[+] Generating docker-compose.yml...')
