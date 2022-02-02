@@ -26,7 +26,7 @@ $$ |   __    $$ |   $$$$$/ $$$$$$/ $$ $$ $$ |$$ |   __
 $$ \__/  |   $$ |   $$ |           $$ |$$$$ |$$ \__/  |
 $$    $$/    $$ |   $$ |           $$ | $$$ |$$    $$/
  $$$$$$/     $$/    $$/            $$/   $$/  $$$$$$/
-'''.split()
+'''.split('\n')
 
 VERSION = ' 0.1.0 '
 
@@ -34,7 +34,7 @@ def init():
 
     col, _ = os.get_terminal_size()
     print('=' * col)
-    print('\n'.join(i.center(col) for i in HELLO))
+    print('\n'.join(i.ljust(56).center(col) for i in HELLO))
     print(VERSION.center(col, '='))
 
     if not os.path.exists('tmp/run'):
@@ -103,6 +103,7 @@ def get_all_files(path):
     return files_
 
 def generate_dockerfile(problems):
+    print(f'[+] Generating Dockerfile...')
     dockerfile_data = {
         'mirrors_base_url': CONFIG['mirrors_base_url'],
         'pypi_index': '' if CONFIG['pypi_index_url'] == '' else f"-i {CONFIG['pypi_index_url']}",
@@ -173,6 +174,8 @@ def generate_dockerfile(problems):
         f.write(template.format(**dockerfile_data).encode())
 
 def generate_start_sh():
+    print(f'[+] Generating launch script...')
+
     template = '#!/bin/sh\n\n'
 
     if CONFIG['download_server']:
@@ -184,6 +187,8 @@ def generate_start_sh():
         f.write(template.encode())
 
 def generate_index(problems):
+    print(f'[+] Generating web index...')
+
     port = CONFIG['port_range_start']
     index_data = ""
 
@@ -200,6 +205,8 @@ def generate_index(problems):
         f.write(template.replace('{problems_trs}', index_data).encode())
 
 def generate_xinetd(problems):
+    print(f'[+] Generating xinetd config...')
+
     port = CONFIG['port_range_start']
 
     with open('template/xinetd','r') as f:
@@ -213,6 +220,8 @@ def generate_xinetd(problems):
             port = port + 1
 
 def generate_dockercompose(problems):
+    print(f'[+] Generating docker-compose.yml...')
+
     with open('template/docker-compose.yml','r') as f:
         template = f.read()
 
@@ -233,8 +242,10 @@ if __name__ == "__main__":
     init()
     problems = get_problems()
     if(len(problems) == 0):
-        print('No problem found!')
+        print('[!] No problem found!')
         exit(1)
+
+    print(f'[+] Loded {len(problems)} problems')
 
     generate_start_sh()
     generate_index(problems)
@@ -245,11 +256,16 @@ if __name__ == "__main__":
     ret = os.system('docker-compose --compatibility up --build -d')
 
     if ret != 0:
-        print('Error occured, exiting...')
+        print('[!] Error occured, exiting...')
         exit(0)
 
+    print('[+] Successfully generated CTF-NC container.')
+    print('[+] Your problems are now available at following ports:')
     port = CONFIG['port_range_start']
     for problem in problems:
 
-        print(f">>> [{port}] => {problem['name']}")
+        print(f" => [{port}] => {problem['name']}")
         port = port + 1
+
+    if CONFIG['download_server']:
+        print(f'[+] Your web page is now available at http://{CONFIG["hostname"]}:{CONFIG["download_port"]}.')
