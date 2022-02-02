@@ -268,7 +268,7 @@ if __name__ == "__main__":
         print('[!] No problem found!')
         exit(1)
 
-    print(f'[+] Loded {len(problems)} problems')
+    print(f'[+] Loaded {len(problems)} problems')
 
     generate_start_sh()
     generate_index(problems)
