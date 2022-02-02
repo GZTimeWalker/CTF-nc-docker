@@ -6,7 +6,10 @@ xinetd
 
 tmp/*
 
+problems/*
+!problems/.gitkeep
+
 !template/*
-problem/*
+
 attachments/*
 !attachments/examples
