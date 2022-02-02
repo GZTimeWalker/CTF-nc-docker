@@ -27,7 +27,7 @@ RUN python -m pip install {pypi_index} --no-cache-dir --upgrade pip && \
 {extra_cmd}
 
 COPY tmp/run /home/ctf/run/
-COPY tmp/index.html download /home/ctf/files/
+COPY tmp/index.html attachments /home/ctf/files/
 COPY xinetd /etc/xinetd.d/ctf
 COPY tmp/start.sh /
 

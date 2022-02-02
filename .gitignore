@@ -7,3 +7,6 @@ xinetd
 tmp/*
 
 !template/*
+problem/*
+attachments/*
+!attachments/examples

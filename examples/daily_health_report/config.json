@@ -7,5 +7,5 @@
   "extra_cmd": [],
   "copy_files": [],
   "echo_msg": ["记得要每日健康申报哦~"],
-  "download_file_name": "dailyhealthreport"
+  "download_file_name": "examples/dailyhealthreport"
 }
