@@ -109,6 +109,7 @@ def get_all_files(path):
 
 def generate_dockerfile(problems):
     print(f'[+] Generating Dockerfile...')
+
     dockerfile_data = {
         'mirrors_base_url': CONFIG['mirrors_base_url'],
         'pypi_index': '' if CONFIG['pypi_index_url'] == '' else f"-i {CONFIG['pypi_index_url']}",
@@ -201,7 +202,7 @@ def generate_index(problems):
 
         row = f'<tr><td>{problem["name"]}</td><td><code>nc <span class="hostname"></span> {port}</code></td></tr>'
         port = port + 1
-        index_data += row + '\n'
+        index_data += row
 
     with open('template/index.html','r') as f:
         template = f.read()
@@ -240,13 +241,9 @@ def generate_dockercompose(problems):
 
     ports = ''
     port = CONFIG['port_range_start']
-
-    for _ in problems:
-        ports += f"- {port}:{port}\n      "
-        port = port + 1
-
+    ports += f'- "{port}-{port + len(problems) - 1}"\n      '
     port = CONFIG['download_port']
-    ports += f"- {port}:{port}\n      "
+    ports += f'- "{port}"'
 
     dockercompose_data['ports'] = ports
 
@@ -254,8 +251,10 @@ def generate_dockercompose(problems):
 
     if CONFIG['resource_limit']['enable']:
         res_lim += 'deploy:\n      resources:\n        limits:\n'
-        res_lim += f'          cpus: \'{CONFIG["resource_limit"]["max_cpu"]}\'\n'
-        res_lim += f'          memory: \'{CONFIG["resource_limit"]["max_memory"]}\'\n'
+        res_lim += f'          cpus: "{CONFIG["resource_limit"]["max_cpu"]}"\n'
+        print(f'[+] Container CPU limit: {CONFIG["resource_limit"]["max_cpu"]}')
+        res_lim += f'          memory: "{CONFIG["resource_limit"]["max_memory"]}"\n'
+        print(f'[+] Container Memory limit: {CONFIG["resource_limit"]["max_memory"]}')
 
     dockercompose_data['resource_limit'] = res_lim
 

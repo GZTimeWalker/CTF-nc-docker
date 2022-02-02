@@ -4,6 +4,8 @@
 
 在根目录执行 `python generate.py`
 
+运行过程中产生的访问日志可以由容器内目录的 `/var/log/ctf/*.log` 获取
+
 ## 配置说明
 
 CTF 中 netcat 题目有关 Docker 的相关构造文件。
