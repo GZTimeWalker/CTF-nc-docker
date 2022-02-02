@@ -2,19 +2,17 @@
 
 ## 构建和运行
 
-在根目录执行 `python generate.py`
+在安装好 docker 后，克隆本仓库到本地并在根目录执行 `python generate.py` 或 `python3 generate.py`。
 
-运行过程中产生的访问日志可以由容器内目录的 `/var/log/ctf/*.log` 获取
+运行过程中产生的访问日志可以由容器内目录的 `/var/log/ctf/*.log` 获取。
+
+若开启文件附件下载服务，则可以通过 `http://{hostname}:{download_port}` 查看到全部题目及其对应端口。
+
+初次运行脚本会在根目录生成 `global.json`，请根据脚本提示进行操作。
 
 ## 配置说明
 
-CTF 中 netcat 题目有关 Docker 的相关构造文件。
-
-因作为本地测试使用，不过多考虑安全性问题，以便捷性为主。后续计划使用 `chroot` 进行进一步加固。
-
-全部题目在相同环境，但是通过不同的脚本启动。题目特性化设置见 `config.json`，全局设置见 `global.json`。
-
-脚本不会拷贝 `config.json` 至目录。
+全局设置见 `global.json`，题目特意化设置见各题目文件夹中的 `config.json`。
 
 ### global.json
 
@@ -66,13 +64,19 @@ CTF 中 netcat 题目有关 Docker 的相关构造文件。
 
 - `enable`: 是否启用该题目
 - `pip_requirements`: 需要使用 pip 安装的包
-- `all_copy`: 是否拷贝题目目录全部文件
+- `all_copy`: 是否拷贝题目目录全部文件 (不拷贝`config.json`)
 - `launch`: 启动程序
 - `args`: 启动参数
 - `extra_cmd`: 其余需要执行的指令 (如 pip)
 - `copy_files`: 当不全部拷贝题目文件时，需要拷贝的文件 (相对于题目目录的路径)
 - `echo_msg`: 执行程序前输出的说明
 - `download_file_name`: 提供需要下载的题目文件
+
+## 注意事项
+
+题目目录下不要再出现以题目名称命名的文件夹！
+
+更多信息请参见：[CTF-nc-docker 配置指南](https://blog.gztime.cc/posts/2022/ac35dae6)
 
 ## 示例题目
 
@@ -119,7 +123,3 @@ CTF 中 netcat 题目有关 Docker 的相关构造文件。
   Hackergame2020题目，crypto题目类型。
 
 - 后期更新...
-
-## 注意事项
-
-题目目录下不要再出现以题目名称命名的文件夹！
