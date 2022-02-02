@@ -16,24 +16,53 @@ CONFIG = {
     "show_warn_msg": True
 }
 
+HELLO = r'''
+  ______   ________  ________       __    __   ______
+ /      \ /        |/        |     /  \  /  | /      \
+/$$$$$$  |$$$$$$$$/ $$$$$$$$/      $$  \ $$ |/$$$$$$  |
+$$ |  $$/    $$ |   $$ |__  ______ $$$  \$$ |$$ |  $$/
+$$ |         $$ |   $$    |/      |$$$$  $$ |$$ |
+$$ |   __    $$ |   $$$$$/ $$$$$$/ $$ $$ $$ |$$ |   __
+$$ \__/  |   $$ |   $$ |           $$ |$$$$ |$$ \__/  |
+$$    $$/    $$ |   $$ |           $$ | $$$ |$$    $$/
+ $$$$$$/     $$/    $$/            $$/   $$/  $$$$$$/
+'''.split()
+
+VERSION = ' 0.1.0 '
+
 def init():
+
+    col, _ = os.get_terminal_size()
+    print('=' * col)
+    print('\n'.join(i.center(col) for i in HELLO))
+    print(VERSION.center(col, '='))
+
     if not os.path.exists('tmp/run'):
         os.makedirs('tmp/run')
     else:
-        for root, dirs, files in os.walk('tmp'):
+        for root, _, files in os.walk('tmp'):
             for file in files:
                 os.remove(os.path.join(root,file))
 
+    if not os.path.exists('global.json'):
+        with open('template/global.json','r') as f:
+            with open('global.json','w') as g:
+                g.write(f.read())
+        print('[+] Please edit your custom config in global.json')
+    else:
+        with open('global.json','r') as f:
+            CONFIG.update(json.load(f))
+
     if not os.path.exists('problems'):
         os.makedirs('problems')
-        print('Please put your problems in ./problems/')
-        print('You can find examples at https://github.com/GZTimeWalker/CTF-nc-docker')
+        print('[+] Please put your problems in ./problems/')
+        print('[+] You can find examples at https://github.com/GZTimeWalker/CTF-nc-docker')
 
     if not os.path.exists('attachments'):
         os.makedirs('attachments')
 
     if not os.path.exists('template'):
-        print('No template available!')
+        print('[!] No template available!')
         exit(1)
     else:
         requires = ['Dockerfile','docker-compose.yml','xinetd','config.json']
@@ -42,10 +71,6 @@ def init():
                 if file not in files:
                     print(f'Template file {os.path.join(root,file)} not found!')
                     exit(1)
-
-    if os.path.exists('global.json'):
-        with open('global.json','r') as f:
-            CONFIG.update(json.load(f))
 
 def get_problems():
     problems = []

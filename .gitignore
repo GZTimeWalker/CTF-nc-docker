@@ -1,5 +1,7 @@
 .vscode/*
 
+global.json
+
 Dockerfile
 docker-compose.yml
 xinetd
