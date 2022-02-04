@@ -14,6 +14,14 @@ export const Portal: FC = () => {
   // const [hostname, setHostname] = useState("localhost");
   const [port, setPort] = useState("");
 
+  const onConnect = () => {
+    if (port) {
+      window.location.href = port;
+    } else {
+      window.location.href = `65100`;
+    }
+  };
+
   return (
     <Center minH="100vh">
       <Box boxShadow="2xl" bg="gray.800" rounded="lg" px="48px" py="24px">
@@ -38,17 +46,15 @@ export const Portal: FC = () => {
               onChange={(e) => {
                 setPort(e.target.value);
               }}
+              onKeyUp={(e) => {
+                if (e.key === "Enter") {
+                  onConnect();
+                }
+              }}
               placeholder="65100"
             />
           </FormControl>
-          <Button onClick={() => {
-              if(port) {
-                window.location.href = `${port}`;
-              }
-              else{
-                window.location.href = `65100`;
-              }
-          }}>Connect</Button>
+          <Button onClick={onConnect}>Connect</Button>
         </VStack>
       </Box>
     </Center>
