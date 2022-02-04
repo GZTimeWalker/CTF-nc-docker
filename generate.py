@@ -46,8 +46,6 @@ def init():
 
     if not os.path.exists('tmp/run'):
         os.makedirs('tmp/run')
-    elif not os.path.exists('tmp/web'):
-        os.makedirs('tmp/web')
     else:
         for root, _, files in os.walk('tmp'):
             for file in files:
