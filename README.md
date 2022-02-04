@@ -131,3 +131,11 @@
   Hackergame2020题目，crypto题目类型。
 
 - 后期更新...
+
+## 图片展示
+
+![](https://github.com/GZTimeWalker/CTF-nc-docker/blob/master/images/problems.jpg)
+
+![](https://github.com/GZTimeWalker/CTF-nc-docker/blob/master/images/webnc_portal.jpg)
+
+![](https://github.com/GZTimeWalker/CTF-nc-docker/blob/master/images/webnc.jpg)
