@@ -74,7 +74,7 @@ def init():
         print('[!] No template available!')
         exit(1)
     else:
-        requires = ['Dockerfile','docker-compose.yml','xinetd','config.json','index.html','global.json']
+        requires = ['Dockerfile','Dockerfile.build','docker-compose.yml','xinetd','config.json','index.html','global.json']
         for root, _, files in os.walk('template'):
             for file in requires:
                 if file not in files:

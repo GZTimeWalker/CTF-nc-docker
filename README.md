@@ -8,6 +8,8 @@
 
 若开启文件附件下载服务，则可以通过 `http://{hostname}:{download_port}` 查看到全部题目及其对应端口。
 
+若开启网络 netcat 终端服务，则可以通过 `http://{hostname}:{download_port}/wnc` 进行连接。
+
 初次运行脚本会在根目录生成 `global.json`，请根据脚本提示进行操作。
 
 ## 配置说明
@@ -20,10 +22,12 @@
 {
     "mirrors_base_url": "mirrors.tuna.tsinghua.edu.cn",
     "pypi_index_url": "https://pypi.tuna.tsinghua.edu.cn/simple",
-    "port_range_start": 65100,
-    "download_port": 65199,
+    "npm_mirror_url": "http://registry.npmmirror.com/",
     "hostname": "localhost",
+    "port_range_start": 65100,
     "download_server": true,
+    "web_netcat_server": true,
+    "server_port": 65199,
     "show_echo_msg": true,
     "show_warn_msg": true,
     "resource_limit": {
@@ -32,14 +36,18 @@
         "max_cpu": "0.5"
     }
 }
+
 ```
 
 - `mirrors_base_url`: Debian 软件源（域名）
 - `pypi_index_url`: PyPI 软件源
+- `npm_mirror_url`: NPM 软件源
+- `hostname`: 访问该容器的主机名
 - `port_range_start`: 起始端口号
 - `download_port`: 文件下载服务所开放的端口
-- `hostname`: 访问该容器的主机名
 - `download_server`: 是否开启文件下载服务
+- `web_netcat_server`: 是否开启网络 netcat 终端服务
+- `server_port`: 服务器端口
 - `show_echo_msg`: 显示题目信息
 - `show_warn_msg`: 显示警告信息
 - `resource_limit`: 运行时容器资源限制
