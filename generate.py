@@ -8,10 +8,12 @@ alphabet = sorted(string.digits + string.ascii_letters)
 CONFIG = {
     "mirrors_base_url": "mirrors.tuna.tsinghua.edu.cn",
     "pypi_index_url": "https://pypi.tuna.tsinghua.edu.cn/simple",
-    "port_range_start": 65100,
-    "download_port": 65199,
+    "npm_mirror_url": "http://registry.npmmirror.com/",
     "hostname": "localhost",
+    "port_range_start": 65100,
     "download_server": True,
+    "web_netcat_server": True,
+    "server_port": 65199,
     "show_echo_msg": True,
     "show_warn_msg": True,
     "resource_limit": {
@@ -33,7 +35,7 @@ $$    $$/    $$ |   $$ |           $$ | $$$ |$$    $$/
  $$$$$$/     $$/    $$/            $$/   $$/  $$$$$$/
 '''.split('\n')
 
-VERSION = ' 1.0.0 '
+VERSION = ' 2.0.0 '
 
 def init():
 
@@ -44,6 +46,8 @@ def init():
 
     if not os.path.exists('tmp/run'):
         os.makedirs('tmp/run')
+    elif not os.path.exists('tmp/web'):
+        os.makedirs('tmp/web')
     else:
         for root, _, files in os.walk('tmp'):
             for file in files:
@@ -70,7 +74,7 @@ def init():
         print('[!] No template available!')
         exit(1)
     else:
-        requires = ['Dockerfile','docker-compose.yml','xinetd','config.json']
+        requires = ['Dockerfile','docker-compose.yml','xinetd','config.json','index.html','global.json']
         for root, _, files in os.walk('template'):
             for file in requires:
                 if file not in files:
@@ -113,12 +117,14 @@ def generate_dockerfile(problems):
     dockerfile_data = {
         'mirrors_base_url': CONFIG['mirrors_base_url'],
         'pypi_index': '' if CONFIG['pypi_index_url'] == '' else f"-i {CONFIG['pypi_index_url']}",
+        'npm_mirror_url': CONFIG['npm_mirror_url'],
         'extra_cmd': '',
         'copy_problem_cmd': '',
         'copy_dirs': [],
         'chmod_cmd': '',
         'chmod_cmds': [],
         'pip_requirements': '',
+        'node_server': '',
         'pip_list': [],
     }
 
@@ -153,7 +159,7 @@ def generate_dockerfile(problems):
                 script += f"echo \'{item}\'\n"
 
             if problem['download_file_name'] != "":
-                script += f"echo \'题目附件：http://{CONFIG['hostname']}:{CONFIG['download_port']}/{problem['download_file_name']}\'\n"
+                script += f"echo \'题目附件：http://{CONFIG['hostname']}:{CONFIG['server_port']}/{problem['download_file_name']}\'\n"
             script += "echo \'\\e[32m{}\\e[0m\'\n".format('=' * 60)
             script += "echo \'\'\n"
 
@@ -170,22 +176,44 @@ def generate_dockerfile(problems):
     else:
         dockerfile_data['pip_requirements'] = 'pip'
 
+    template_name = 'Dockerfile'
+
+    # choose one server
+    if CONFIG['web_netcat_server']:
+        dockerfile_data['node_server'] += "COPY web/webnc /build/\n"
+        dockerfile_data['node_server'] += "COPY web/src/webnc /src/\n"
+        dockerfile_data['node_server'] += "RUN cd /src && npm i && npm run build &&\\\n"
+        dockerfile_data['node_server'] += "    mkdir -p /build/static/wnc && mv /src/build/* /build/static/wnc\n"
+    elif CONFIG['download_server']:
+        dockerfile_data['node_server'] += "COPY web/fileonly /build/\n"
+
+    if CONFIG['web_netcat_server'] or CONFIG['download_server']:
+        template_name = 'Dockerfile.build'
+
+    if CONFIG['download_server']:
+        dockerfile_data['node_server'] += "COPY tmp/index.html attachments /build/static/\n"
+
     dockerfile_data['chmod_cmd'] = "RUN " + ' && \\\n '.join(dockerfile_data['chmod_cmds'])
 
-    with open('template/Dockerfile','r') as f:
+    with open(f'template/{template_name}','r') as f:
         template = f.read()
 
     with open('Dockerfile','wb') as f:
         f.write(template.format(**dockerfile_data).encode())
 
-def generate_start_sh():
+def generate_start_sh(problems):
     print(f'[+] Generating launch script...')
 
     template = '#!/bin/sh\n\n'
 
-    if CONFIG['download_server']:
-        template += 'cd /home/ctf/files\n'
-        template += f'nohup python3 -m http.server {CONFIG["download_port"]} > /var/log/file.log 2>&1 &\n'
+    if CONFIG['web_netcat_server']:
+        template += 'cd /home/ctf/web\n'
+        template += f'nohup node server.js {CONFIG["server_port"]} '
+        template += f'{CONFIG["port_range_start"]}-{CONFIG["port_range_start"] + len(problems) - 1} '
+        template += f'> /var/log/server.log 2>&1 &\n'
+    elif CONFIG['download_server']:
+        template += 'cd /home/ctf/web\n'
+        template += f'nohup node server.js {CONFIG["server_port"]} > /var/log/server.log 2>&1 &\n'
 
     template += 'cd / && xinetd -dontfork'
     with open('tmp/start.sh','wb') as f:
@@ -198,7 +226,7 @@ def generate_index(problems):
     index_data = ""
 
     for problem in problems:
-        row = f'<tr><td>{problem["name"]}</td><td><code>nc <span class="hostname"></span> {port}</code></td></tr>'
+        row = f'<tr><td>{problem["name"]}</td><td><code>{port}</code></td></tr>'
         port = port + 1
         index_data += row
 
@@ -239,7 +267,7 @@ def generate_dockercompose(problems):
     ports = ''
     port = CONFIG['port_range_start']
     ports += f'- "{port}-{port + len(problems) - 1}:{port}-{port + len(problems) - 1}"\n      '
-    port = CONFIG['download_port']
+    port = CONFIG['server_port']
     ports += f'- "{port}:{port}"'
 
     dockercompose_data['ports'] = ports
@@ -268,7 +296,7 @@ if __name__ == "__main__":
 
     print(f'[+] Loaded {len(problems)} problems')
 
-    generate_start_sh()
+    generate_start_sh(problems)
     generate_index(problems)
     generate_dockerfile(problems)
     generate_xinetd(problems)
@@ -289,4 +317,7 @@ if __name__ == "__main__":
         port = port + 1
 
     if CONFIG['download_server']:
-        print(f'[+] Your web page is now available at http://{CONFIG["hostname"]}:{CONFIG["download_port"]}.')
+        print(f'[+] Your web page is now available at http://{CONFIG["hostname"]}:{CONFIG["server_port"]}.')
+
+    if CONFIG['web_netcat_server']:
+        print(f'[+] Your web netcat is now available at http://{CONFIG["hostname"]}:{CONFIG["server_port"]}/wnc.')

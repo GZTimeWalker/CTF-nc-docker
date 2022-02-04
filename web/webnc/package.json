@@ -1,0 +1,7 @@
+{
+    "dependencies": {
+      "express": "^4.17.1",
+      "express-ws": "^5.0.2",
+      "node-pty": "^0.10.1"
+    }
+  }

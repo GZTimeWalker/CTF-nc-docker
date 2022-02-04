@@ -1,0 +1,53 @@
+{
+  "name": "webnc",
+  "version": "0.1.0",
+  "homepage": "/wnc/",
+  "private": true,
+  "dependencies": {
+    "@chakra-ui/react": "^1.8.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^6.2.1",
+    "react-scripts": "5.0.0",
+    "xterm": "^4.17.0",
+    "xterm-addon-attach": "^0.6.0",
+    "xterm-addon-fit": "^0.5.0",
+    "xterm-addon-webgl": "^0.11.4"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "@types/react": "^17.0.39",
+    "@types/react-dom": "^17.0.11",
+    "@types/react-router": "^5.1.18",
+    "@types/react-router-dom": "^5.3.3",
+    "ajv": "^6.9.1",
+    "cross-env": "^7.0.3",
+    "nan": "^2.14.2",
+    "prettier": "^2.3.2",
+    "typescript": "^4.5.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
