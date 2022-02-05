@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const _ = require("express-ws")(app);
 const pty = require("node-pty");
+const moment = require("moment");
 const { resolve } = require('path')
 
 app.set('trust proxy', 'loopback');
@@ -31,7 +32,7 @@ app.ws("/shell/:port", (ws, req) => {
     return ws.close(1008, "Port not allowed.");
   }
 
-  console.log(`[+] New connection received. [${port}] <- ${req.ip}`);
+  console.log(`[${moment().format()}] [+] New connection received. [${port}] <- ${req.ip}`);
 
   var shell = pty.spawn("/bin/nc", ["localhost", req.params.port]);
 
@@ -49,7 +50,7 @@ app.ws("/shell/:port", (ws, req) => {
 
   ws.on("close", () => {
     shell.kill();
-    console.log(`[+] Connection closed.       [${port}] X- ${req.ip}`);
+    console.log(`[${moment().format()}] [+] Connection closed.       [${port}] X- ${req.ip}`);
   });
 });
 
@@ -58,5 +59,5 @@ app.get("/wnc/*", (req, res) => {
 });
 
 app.listen(parseInt(args[0]), () => {
-  console.log("[+] Listening on port " + args[0]);
+  console.log(`[${moment().format()}] [+] Listening on port ${args[0]}`);
 });
