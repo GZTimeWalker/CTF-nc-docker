@@ -4,6 +4,7 @@ const _ = require("express-ws")(app);
 const pty = require("node-pty");
 const { resolve } = require('path')
 
+app.set('trust proxy', 'loopback');
 app.use(express.static("static"));
 
 const args = process.argv.slice(2);
@@ -30,7 +31,7 @@ app.ws("/shell/:port", (ws, req) => {
     return ws.close(1008, "Port not allowed.");
   }
 
-  console.log(`[+] New connection received. [${port}]`);
+  console.log(`[+] New connection received. [${port}] <- ${req.ip}`);
 
   var shell = pty.spawn("/bin/nc", ["localhost", req.params.port]);
 
@@ -44,12 +45,11 @@ app.ws("/shell/:port", (ws, req) => {
 
   shell.on("close", () => {
     ws.close();
-    console.log(`[+] Connection closed. [${port}]`);
   });
 
   ws.on("close", () => {
     shell.kill();
-    console.log(`[+] Connection closed. [${port}]`);
+    console.log(`[+] Connection closed.       [${port}] <- ${req.ip}`);
   });
 });
 
