@@ -35,7 +35,7 @@ $$    $$/    $$ |   $$ |           $$ | $$$ |$$    $$/
  $$$$$$/     $$/    $$/            $$/   $$/  $$$$$$/
 '''.split('\n')
 
-VERSION = ' 2.0.0 '
+VERSION = ' 2.0.2 '
 
 def init():
 
@@ -157,7 +157,7 @@ def generate_dockerfile(problems):
                 script += f"echo \'{item}\'\n"
 
             if problem['download_file_name'] != "":
-                script += f"echo \'题目附件：http://{CONFIG['hostname']}:{CONFIG['server_port']}/{problem['download_file_name']}\'\n"
+                script += f"echo \'题目附件：/{problem['download_file_name']}\'\n"
             script += "echo \'\\e[32m{}\\e[0m\'\n".format('=' * 60)
             script += "echo \'\'\n"
 
@@ -232,7 +232,12 @@ def generate_index(problems):
         template = f.read()
 
     with open('tmp/index.html','wb') as f:
-        f.write(template.replace('{problems_trs}', index_data).encode())
+        template = template.replace('{problems_trs}', index_data)
+        if CONFIG['web_netcat_server']:
+            template = template.replace('{web_netcat_link}', '<p> Web netcat: <code><span class="url"></span>/wnc</code></p>')
+        else:
+            template = template.replace('{web_netcat_link}', '')
+        f.write(template.encode())
 
 def generate_xinetd(problems):
     print(f'[+] Generating xinetd config...')
