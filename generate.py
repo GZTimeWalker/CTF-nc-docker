@@ -180,7 +180,7 @@ def generate_dockerfile(problems):
     if CONFIG['web_netcat_server']:
         dockerfile_data['node_server'] += "COPY web/webnc /build/\n"
         dockerfile_data['node_server'] += "COPY web/src/webnc /src/\n"
-        dockerfile_data['node_server'] += "RUN cd /src && npm i && npm run build &&\\\n"
+        dockerfile_data['node_server'] += "RUN cd /src && npm i --verbose && npm run build &&\\\n"
         dockerfile_data['node_server'] += "    mkdir -p /build/static/wnc && mv /src/build/* /build/static/wnc\n"
     elif CONFIG['download_server']:
         dockerfile_data['node_server'] += "COPY web/fileonly /build/\n"

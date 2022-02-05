@@ -7,7 +7,7 @@ RUN npm config set registry {npm_mirror_url} &&\
 
 {node_server}
 
-RUN cd /build && npm i
+RUN cd /build && npm i --verbose
 
 FROM nikolaik/python-nodejs:python3.10-nodejs17-slim as final
 

@@ -49,7 +49,7 @@ app.ws("/shell/:port", (ws, req) => {
 
   ws.on("close", () => {
     shell.kill();
-    console.log(`[+] Connection closed.       [${port}] <- ${req.ip}`);
+    console.log(`[+] Connection closed.       [${port}] X- ${req.ip}`);
   });
 });
 
