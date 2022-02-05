@@ -16,12 +16,19 @@ allow_ports_str.forEach((i) => allow_ports.push(parseInt(i)));
 if (allow_ports.length != 2) allow_ports = [65100, 65100];
 
 app.ws("/shell/:port", (ws, req) => {
-  if (!req.params.port) ws.close(1008, "Port not allowed.");
+  if (!req.params.port)
+  {
+    ws.send('Port not allowed.');
+    return ws.close(1008, "Port not allowed.");
+  }
 
   let port = parseInt(req.params.port);
 
-  if (port < allow_ports[0] || port > allow_ports[1])
+  if (!port || port < allow_ports[0] || port > allow_ports[1])
+  {
+    ws.send('Port not allowed.');
     return ws.close(1008, "Port not allowed.");
+  }
 
   console.log(`[+] New connection received. [${port}]`);
 
@@ -37,6 +44,7 @@ app.ws("/shell/:port", (ws, req) => {
 
   shell.on("close", () => {
     ws.close();
+    console.log(`[+] Connection closed. [${port}]`);
   });
 
   ws.on("close", () => {

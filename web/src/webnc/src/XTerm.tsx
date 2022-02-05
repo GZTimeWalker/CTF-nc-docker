@@ -9,7 +9,7 @@ import "xterm/css/xterm.css";
 
 export const XTerm: FC = () => {
   const params = useParams();
-  const port = params.port ?? "65198";
+  const port = params.port ?? "65100";
   const url = document.location.origin.replace(/^http/, "ws") + "/shell";
 
   const xterm = useRef<Terminal>(
@@ -32,7 +32,7 @@ export const XTerm: FC = () => {
   const termdiv = useRef<HTMLDivElement>(null);
 
   socket.current.onclose = _ => {
-    xterm.current.writeln("\nConnection closed.");
+    xterm.current.writeln("\r\nConnection closed.");
   }
 
   useEffect(() => {
