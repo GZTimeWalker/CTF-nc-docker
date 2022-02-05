@@ -234,7 +234,7 @@ def generate_index(problems):
     with open('tmp/index.html','wb') as f:
         template = template.replace('{problems_trs}', index_data)
         if CONFIG['web_netcat_server']:
-            template = template.replace('{web_netcat_link}', '<p> Web netcat: <code><span class="url"></span>/wnc</code></p>')
+            template = template.replace('{web_netcat_link}', '<p> Web netcat: <a href="/wnc"><code><span class="url"></span>/wnc</code></a></p>')
         else:
             template = template.replace('{web_netcat_link}', '')
         f.write(template.encode())
