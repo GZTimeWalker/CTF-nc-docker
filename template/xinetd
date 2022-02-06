@@ -1,7 +1,7 @@
 service ctf
 {{
     disable     = no
-    id          = {problem_name}
+    id          = {challenge_name}
     socket_type = stream
     protocol    = tcp
     wait        = no
@@ -10,8 +10,8 @@ service ctf
     port        = {port}
     bind        = 0.0.0.0
     server      = /bin/sh
-    server_args = /home/ctf/run/{problem_alian}.sh
-    log_type    = FILE /var/log/ctf/{problem_name}.log 20971520 52428800
+    server_args = /home/ctf/run/{challenge_alian}.sh
+    log_type    = FILE /var/log/ctf/{challenge_name}.log 20971520 52428800
     log_on_failure = HOST
     log_on_success = PID HOST DURATION EXIT
     # safety options

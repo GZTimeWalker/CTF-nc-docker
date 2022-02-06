@@ -34,8 +34,8 @@ RUN chown -R root:root /home && \
   chmod 711 /etc/xinetd.d/ctf
 
 WORKDIR /home/ctf
-# copy problem
-{copy_problem_cmd}
+# copy challenge
+{copy_challenge_cmd}
 
 # chown & chmod
 {chmod_cmd}

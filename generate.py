@@ -60,9 +60,9 @@ def init():
         with open('global.json','r') as f:
             CONFIG.update(json.load(f))
 
-    if not os.path.exists('problems'):
-        os.makedirs('problems')
-        print('[+] Please put your problems in ./problems/')
+    if not os.path.exists('challenges'):
+        os.makedirs('challenges')
+        print('[+] Please put your challenges in ./challenges/')
         print('[+] You can find examples at https://github.com/GZTimeWalker/CTF-nc-docker')
 
     if not os.path.exists('attachments'):
@@ -79,25 +79,25 @@ def init():
                     print(f'Template file {os.path.join(root,file)} not found!')
                     exit(1)
 
-def get_problems():
-    problems = []
-    for problem in os.listdir('problems'):
-        if not os.path.isdir(os.path.join('problems', problem)):
+def get_challenges():
+    challenges = []
+    for challenge in os.listdir('challenges'):
+        if not os.path.isdir(os.path.join('challenges', challenge)):
             continue
-        if not os.path.exists(os.path.join('problems', problem, 'config.json')):
+        if not os.path.exists(os.path.join('challenges', challenge, 'config.json')):
             with open('template/config.json','r') as default_config:
-                with open(os.path.join('problems', problem, 'config.json'),'w') as f:
+                with open(os.path.join('challenges', challenge, 'config.json'),'w') as f:
                     f.write(default_config.read())
         else:
-            with open(os.path.join('problems', problem, 'config.json'),'r', encoding='utf-8') as f:
+            with open(os.path.join('challenges', challenge, 'config.json'),'r', encoding='utf-8') as f:
                 p = {
-                    'name': problem.replace(' ','_').replace('-','_'),
+                    'name': challenge.replace(' ','_').replace('-','_'),
                     'dir': ''.join([random.choice(alphabet) for _ in range(16)])
                 }
                 p.update(json.load(f))
                 if p['enable']:
-                    problems.append(p)
-    return problems
+                    challenges.append(p)
+    return challenges
 
 def get_all_files(path):
     files_ = []
@@ -109,7 +109,7 @@ def get_all_files(path):
             files_ += get_all_files(os.path.join(root, dir_))
     return files_
 
-def generate_dockerfile(problems):
+def generate_dockerfile(challenges):
     print(f'[+] Generating Dockerfile...')
 
     dockerfile_data = {
@@ -117,7 +117,7 @@ def generate_dockerfile(problems):
         'pypi_index': '' if CONFIG['pypi_index_url'] == '' else f"-i {CONFIG['pypi_index_url']}",
         'npm_mirror_url': CONFIG['npm_mirror_url'],
         'extra_cmd': '',
-        'copy_problem_cmd': '',
+        'copy_challenge_cmd': '',
         'copy_dirs': [],
         'chmod_cmd': '',
         'chmod_cmds': [],
@@ -126,48 +126,48 @@ def generate_dockerfile(problems):
         'pip_list': [],
     }
 
-    for problem in problems:
-        dockerfile_data['pip_list'] += problem['pip_requirements']
+    for challenge in challenges:
+        dockerfile_data['pip_list'] += challenge['pip_requirements']
 
-        if len(problem['extra_cmd']) > 0:
-            dockerfile_data['extra_cmd'] += f"# ==> for {problem['name']}\n"
-            for cmd in problem['extra_cmd']:
+        if len(challenge['extra_cmd']) > 0:
+            dockerfile_data['extra_cmd'] += f"# ==> for {challenge['name']}\n"
+            for cmd in challenge['extra_cmd']:
                 dockerfile_data['extra_cmd'] += f"RUN {cmd}\n"
 
-        if problem['all_copy'] or len(problem['copy_files']) > 0:
-            dockerfile_data['copy_problem_cmd'] += f"# ==> for {problem['name']}\n"
-            if problem['all_copy']:
-                items = get_all_files(os.path.join('problems',problem['name']))
+        if challenge['all_copy'] or len(challenge['copy_files']) > 0:
+            dockerfile_data['copy_challenge_cmd'] += f"# ==> for {challenge['name']}\n"
+            if challenge['all_copy']:
+                items = get_all_files(os.path.join('challenges',challenge['name']))
             else:
-                items = [f"problems/{problem['name']}/" + i for i in problem['copy_files']]
-            dest = f"{problem['dir']}/"
-            dockerfile_data['copy_problem_cmd'] += f"COPY {' '.join(items)} {dest}\n"
+                items = [f"challenges/{challenge['name']}/" + i for i in challenge['copy_files']]
+            dest = f"{challenge['dir']}/"
+            dockerfile_data['copy_challenge_cmd'] += f"COPY {' '.join(items)} {dest}\n"
 
-        script = f"#!/bin/sh\n\ncd /home/ctf/{problem['dir']}\n"
+        script = f"#!/bin/sh\n\ncd /home/ctf/{challenge['dir']}\n"
 
-        if CONFIG['show_echo_msg'] and len(problem['echo_msg']) > 0:
-            script += "echo \'\\e[32m{}\\e[0m\'\n".format((' \\e[33m' + problem['name'] + ' \\e[32m').center(72,'='))
+        if CONFIG['show_echo_msg'] and len(challenge['echo_msg']) > 0:
+            script += "echo \'\\e[32m{}\\e[0m\'\n".format((' \\e[33m' + challenge['name'] + ' \\e[32m').center(72,'='))
 
             if CONFIG['show_warn_msg']:
                 script += "echo \'\\e[32m!!!  \\e[31m此环境为测试训练环境，安全性较弱，请勿执行恶意代码  \\e[32m!!!\\e[0m\'\n"
                 script += "echo \'\\e[32m!!!   \\e[31mDO NOT EXECUTE HARMFUL CODE IN THIS TRAINING ENV   \\e[32m!!!\\e[0m\'\n"
                 script += "echo \'\\e[32m{}\\e[0m\'\n".format('=' * 60)
 
-            for item in problem['echo_msg']:
+            for item in challenge['echo_msg']:
                 script += f"echo \'{item}\'\n"
 
-            if problem['download_file_name'] != "":
-                script += f"echo \'题目附件：/{problem['download_file_name']}\'\n"
+            if challenge['download_file_name'] != "":
+                script += f"echo \'题目附件：/{challenge['download_file_name']}\'\n"
             script += "echo \'\\e[32m{}\\e[0m\'\n".format('=' * 60)
             script += "echo \'\'\n"
 
-        script += f"{problem['launch']} {' '.join(problem['args'])}\n"
+        script += f"{challenge['launch']} {' '.join(challenge['args'])}\n"
 
-        with open(f"tmp/run/{problem['dir']}.sh",'wb') as f:
+        with open(f"tmp/run/{challenge['dir']}.sh",'wb') as f:
             f.write(script.encode())
 
-        dockerfile_data['chmod_cmds'].append(f"chmod 755 /home/ctf/run/{problem['dir']}.sh")
-        dockerfile_data['chmod_cmds'].append(f"chmod -R 755 /home/ctf/{problem['dir']}")
+        dockerfile_data['chmod_cmds'].append(f"chmod 755 /home/ctf/run/{challenge['dir']}.sh")
+        dockerfile_data['chmod_cmds'].append(f"chmod -R 755 /home/ctf/{challenge['dir']}")
 
     if len(dockerfile_data['pip_list']) > 0:
         dockerfile_data['pip_requirements'] = ' '.join(dockerfile_data['pip_list'])
@@ -199,7 +199,7 @@ def generate_dockerfile(problems):
     with open('Dockerfile','wb') as f:
         f.write(template.format(**dockerfile_data).encode())
 
-def generate_start_sh(problems):
+def generate_start_sh(challenges):
     print(f'[+] Generating launch script...')
 
     template = '#!/bin/sh\n\n'
@@ -207,7 +207,7 @@ def generate_start_sh(problems):
     if CONFIG['web_netcat_server']:
         template += 'cd /home/ctf/web\n'
         template += f'nohup node server.js {CONFIG["server_port"]} '
-        template += f'{CONFIG["port_range_start"]}-{CONFIG["port_range_start"] + len(problems) - 1} '
+        template += f'{CONFIG["port_range_start"]}-{CONFIG["port_range_start"] + len(challenges) - 1} '
         template += f'> /var/log/server.log 2>&1 &\n'
     elif CONFIG['download_server']:
         template += 'cd /home/ctf/web\n'
@@ -217,14 +217,14 @@ def generate_start_sh(problems):
     with open('tmp/start.sh','wb') as f:
         f.write(template.encode())
 
-def generate_index(problems):
+def generate_index(challenges):
     print(f'[+] Generating web index...')
 
     port = CONFIG['port_range_start']
     index_data = ""
 
-    for problem in problems:
-        row = f'<tr><td>{problem["name"]}</td><td><code>{port}</code></td></tr>'
+    for challenge in challenges:
+        row = f'<tr><td>{challenge["name"]}</td><td><code>{port}</code></td></tr>'
         port = port + 1
         index_data += row
 
@@ -232,14 +232,14 @@ def generate_index(problems):
         template = f.read()
 
     with open('tmp/index.html','wb') as f:
-        template = template.replace('{problems_trs}', index_data)
+        template = template.replace('{challenges_trs}', index_data)
         if CONFIG['web_netcat_server']:
             template = template.replace('{web_netcat_link}', '<p> Web netcat: <a href="/wnc"><code><span class="url"></span>/wnc</code></a></p>')
         else:
             template = template.replace('{web_netcat_link}', '')
         f.write(template.encode())
 
-def generate_xinetd(problems):
+def generate_xinetd(challenges):
     print(f'[+] Generating xinetd config...')
 
     port = CONFIG['port_range_start']
@@ -248,18 +248,18 @@ def generate_xinetd(problems):
         template = f.read()
 
     with open('xinetd','wb') as f:
-        for problem in problems:
-            problem_data = {
+        for challenge in challenges:
+            challenge_data = {
                 'port': port,
-                'problem_name': problem['name'],
-                'problem_alian': problem['dir']
+                'challenge_name': challenge['name'],
+                'challenge_alian': challenge['dir']
             }
 
-            f.write(template.format(**problem_data).encode())
+            f.write(template.format(**challenge_data).encode())
             f.write(b'\n\n')
             port += 1
 
-def generate_dockercompose(problems):
+def generate_dockercompose(challenges):
     dockercompose_data = {}
 
     print(f'[+] Generating docker-compose.yml...')
@@ -269,7 +269,7 @@ def generate_dockercompose(problems):
 
     ports = ''
     port = CONFIG['port_range_start']
-    ports += f'- "{port}-{port + len(problems) - 1}:{port}-{port + len(problems) - 1}"\n      '
+    ports += f'- "{port}-{port + len(challenges) - 1}:{port}-{port + len(challenges) - 1}"\n      '
     port = CONFIG['server_port']
     ports += f'- "{port}:{port}"'
 
@@ -291,19 +291,19 @@ def generate_dockercompose(problems):
 
 if __name__ == "__main__":
     init()
-    problems = get_problems()
+    challenges = get_challenges()
 
-    if(len(problems) == 0):
-        print('[!] No problem found!')
+    if(len(challenges) == 0):
+        print('[!] No challenge found!')
         exit(1)
 
-    print(f'[+] Loaded {len(problems)} problems')
+    print(f'[+] Loaded {len(challenges)} challenges')
 
-    generate_start_sh(problems)
-    generate_index(problems)
-    generate_dockerfile(problems)
-    generate_xinetd(problems)
-    generate_dockercompose(problems)
+    generate_start_sh(challenges)
+    generate_index(challenges)
+    generate_dockerfile(challenges)
+    generate_xinetd(challenges)
+    generate_dockercompose(challenges)
 
     ret = os.system('docker-compose --compatibility up --build -d')
 
@@ -312,11 +312,11 @@ if __name__ == "__main__":
         exit(ret)
 
     print('[+] Successfully generated CTF-NC container.')
-    print('[+] Your problems are now available at following ports:')
+    print('[+] Your challenges are now available at following ports:')
 
     port = CONFIG['port_range_start']
-    for problem in problems:
-        print(f" => [{port}] => {problem['name']}")
+    for challenge in challenges:
+        print(f" => [{port}] => {challenge['name']}")
         port = port + 1
 
     if CONFIG['download_server']:

@@ -1,15 +1,14 @@
 .vscode/*
 
 global.json
-
 Dockerfile
 docker-compose.yml
 xinetd
 
 tmp/*
 
-problems/*
-!problems/.gitkeep
+challenges/*
+!challenges/.gitkeep
 
 !template/*
 
