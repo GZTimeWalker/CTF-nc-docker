@@ -4,13 +4,9 @@
 
 在安装好 docker 后，克隆本仓库到本地并在根目录执行 `python generate.py` 或 `python3 generate.py`。
 
-运行过程中产生的访问日志可以由容器内目录的 `/var/log/ctf/*.log` 获取。
+运行过程中产生的访问日志可以由容器内目录的 `/var/log/ctf/*.log` 获取。若开启文件附件下载服务，则可以通过 `http://{hostname}:{download_port}` 查看到全部题目及其对应端口。若开启网络 netcat 终端服务，则可以通过 `http://{hostname}:{download_port}/wnc` 进行连接。初次运行脚本会在根目录生成 `global.json`，请根据脚本提示进行操作。
 
-若开启文件附件下载服务，则可以通过 `http://{hostname}:{download_port}` 查看到全部题目及其对应端口。
-
-若开启网络 netcat 终端服务，则可以通过 `http://{hostname}:{download_port}/wnc` 进行连接。
-
-初次运行脚本会在根目录生成 `global.json`，请根据脚本提示进行操作。
+环境中自带 `python` 与 `nodejs`，支持基于他们的题目及二进制题目。
 
 ## 配置说明
 
@@ -88,49 +84,25 @@
 
 ## 示例题目
 
-- `build_yourself_in`
-
-  一道python沙箱逃逸题目，运行时将有限制的python终端暴露给连接方。
-
 - `tictactoe`
 
   Hackergame2020题目，pwn题目类型。
-  使用栈溢出进行执行流控制，同时可通过构造 rop chain 进行 getshell。无 `canary` 栈溢出防护。
-
-- `string_tools`
-
-  Hackergame2020题目，misc题目类型。
-  一些在字符串格式转换和编解码中的小技巧。
 
 - `calculator_never_overflow`
 
   Hackergame2020题目，math题目类型。
-  较为基础的一道密码学题目，[可见这里](https://crypto.stackexchange.com/questions/34061/factoring-large-n-given-oracle-to-find-square-roots-modulo-n)
-
-- `theorem_prover`
-
-  Hackergame2020题目，math题目类型。
-  搜索与暴力
 
 - `unboxing_simulator`
 
   Hackergame2020题目，math题目类型。
-  建议手写 bfcode
 
 - `cosmic_ray_simulator`
 
   Hackergame2020题目，pwn题目类型。
-  这是无穷的宇宙射线。
 
 - `self_repeating_repeater`
 
   Hackergame2020题目，misc题目类型。
-
-- `man_in_the_middle`
-
-  Hackergame2020题目，crypto题目类型。
-
-- 后期更新...
 
 ## 图片展示
 
