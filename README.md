@@ -1,16 +1,17 @@
 # CTF-nc-docker
 
-## 构建和运行
+[English](https://github.com/GZTimeWalker/CTF-nc-docker/blob/master/README.md) | [中文文档](https://github.com/GZTimeWalker/CTF-nc-docker/blob/master/README.zh_cn.md)
 
-在安装好 docker 后，克隆本仓库到本地并在根目录执行 `python generate.py` 或 `python3 generate.py`。
+## Build and run
 
-运行过程中产生的访问日志可以由容器内目录的 `/var/log/ctf/*.log` 获取。若开启文件附件下载服务，则可以通过 `http://{hostname}:{download_port}` 查看到全部题目及其对应端口。若开启网络 netcat 终端服务，则可以通过 `http://{hostname}:{download_port}/wnc` 进行连接。初次运行脚本会在根目录生成 `global.json`，请根据脚本提示进行操作。
+After installing docker, clone this repository and run `python generate.py` or `python3 generate.py` in it.
 
-环境中自带 `python` 与 `nodejs`，支持基于他们的题目及二进制题目。
+The logs generated during the running can be got from `/var/log/ctf/*.log` and `/var/log/server.log` inside the container. If the attached files download service is enabled, you can view all the challenges and their corresponding ports via `http://{hostname}:{download_port}`. If the web netcat service is enabled, you can connect to it via `http://{hostname}:{download_port}/wnc`. When running the script for the first time, `global.json` will be generated in the current folder, and please operate following the prompts in the script.
 
-## 配置说明
+The environment includes `python` and `nodejs`, so challenges based on them and binary challenges are supported.
+## Configuration
 
-全局设置见 `global.json`，题目特意化设置见各题目文件夹中的 `config.json`。
+Edit `global.json` for global configuration, and `config.json` in each challenge directory for challenge specific configuration.
 
 ### global.json
 
@@ -19,7 +20,6 @@
     "mirrors_base_url": "mirrors.tuna.tsinghua.edu.cn",
     "pypi_index_url": "https://pypi.tuna.tsinghua.edu.cn/simple",
     "npm_mirror_url": "http://registry.npmmirror.com/",
-    "hostname": "localhost",
     "port_range_start": 65100,
     "download_server": true,
     "web_netcat_server": true,
@@ -35,21 +35,19 @@
 
 ```
 
-- `mirrors_base_url`: Debian 软件源（域名）
-- `pypi_index_url`: PyPI 软件源
-- `npm_mirror_url`: NPM 软件源
-- `hostname`: 访问该容器的主机名
-- `port_range_start`: 起始端口号
-- `download_port`: 文件下载服务所开放的端口
-- `download_server`: 是否开启文件下载服务
-- `web_netcat_server`: 是否开启网络 netcat 终端服务
-- `server_port`: 服务器端口
-- `show_echo_msg`: 显示题目信息
-- `show_warn_msg`: 显示警告信息
-- `resource_limit`: 运行时容器资源限制
-  - `enable`: 是否启用限制
-  - `max_memory`: 最大占用内存
-  - `max_cpu`: 最大占用CPU
+- `mirrors_base_url`: Debian mirror source (domain)
+- `pypi_index_url`: PyPI package source
+- `npm_mirror_url`: NPM package source
+- `port_range_start`: The start port for the range of ports for challenges
+- `download_server`: Whether to enable the download server
+- `web_netcat_server`: Whether to enable the web netcat server
+- `server_port`: The port of the download server
+- `show_echo_msg`: Whether to show the echo message
+- `show_warn_msg`: Whether to show the warning message
+- `resource_limit`: Configuration for resource limit
+  - `enable`: Whether to enable resource limit
+  - `max_memory`: The maximum memory usage
+  - `max_cpu`: The maximum CPU usage
 ### config.json
 
 ```json
@@ -66,45 +64,45 @@
 }
 ```
 
-- `enable`: 是否启用该题目
-- `pip_requirements`: 需要使用 pip 安装的包
-- `all_copy`: 是否拷贝题目目录全部文件 (不拷贝`config.json`)
-- `launch`: 启动程序
-- `args`: 启动参数
-- `extra_cmd`: 其余需要执行的指令 (如 pip)
-- `copy_files`: 当不全部拷贝题目文件时，需要拷贝的文件 (相对于题目目录的路径)
-- `echo_msg`: 执行程序前输出的说明
-- `download_file_name`: 提供需要下载的题目文件
+- `enable`: Whether to enable this challenge
+- `pip_requirements`: The requirements for pip packages
+- `all_copy`: Whether to copy all files in the challenge directory (`config.json` is not included)
+- `launch`: The launch command
+- `args`: The arguments for the launch command
+- `extra_cmd`: The extra commands to run when build the challenge
+- `copy_files`: The files to copy to the container (when `all_copy` is false)
+- `echo_msg`: The echo message
+- `download_file_name`: The file name of the challenge file
 
-## 注意事项
+## Notice
 
-题目目录下不要再出现以题目名称命名的文件夹！
+Do not put the dictionary with the same name as the challenge in the same directory!
 
-更多信息请参见：[CTF-nc-docker 配置指南](https://blog.gztime.cc/posts/2022/ac35dae6)
+For more information, please refer to the [CTF-nc-docker 配置指南](https://blog.gztime.cc/posts/2022/ac35dae6) (chinese only).
 
-## 示例题目
+## Examples
 
 - `tictactoe`
 
-  Hackergame2020题目，pwn题目类型。
+  A pwn challenge from Hackergame 2020.
 
 - `calculator_never_overflow`
 
-  Hackergame2020题目，math题目类型。
+  A math challenge from Hackergame 2020.
 
 - `unboxing_simulator`
 
-  Hackergame2020题目，math题目类型。
+  A math challenge from Hackergame 2020.
 
 - `cosmic_ray_simulator`
 
-  Hackergame2020题目，pwn题目类型。
+  A pwn challenge from Hackergame 2020.
 
 - `self_repeating_repeater`
 
-  Hackergame2020题目，misc题目类型。
+  A misc challenge from Hackergame 2020.
 
-## 图片展示
+## Images
 
 ![](https://github.com/GZTimeWalker/CTF-nc-docker/blob/master/images/problems.jpg)
 

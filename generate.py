@@ -9,7 +9,6 @@ CONFIG = {
     "mirrors_base_url": "mirrors.tuna.tsinghua.edu.cn",
     "pypi_index_url": "https://pypi.tuna.tsinghua.edu.cn/simple",
     "npm_mirror_url": "http://registry.npmmirror.com/",
-    "hostname": "localhost",
     "port_range_start": 65100,
     "download_server": True,
     "web_netcat_server": True,
@@ -320,7 +319,7 @@ if __name__ == "__main__":
         port = port + 1
 
     if CONFIG['download_server']:
-        print(f'[+] Your web page is now available at http://{CONFIG["hostname"]}:{CONFIG["server_port"]}.')
+        print(f'[+] Your web page is now available at http://localhost:{CONFIG["server_port"]}.')
 
     if CONFIG['web_netcat_server']:
-        print(f'[+] Your web netcat is now available at http://{CONFIG["hostname"]}:{CONFIG["server_port"]}/wnc.')
+        print(f'[+] Your web netcat is now available at http://localhost:{CONFIG["server_port"]}/wnc.')

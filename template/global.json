@@ -2,7 +2,6 @@
     "mirrors_base_url": "mirrors.tuna.tsinghua.edu.cn",
     "pypi_index_url": "https://pypi.tuna.tsinghua.edu.cn/simple",
     "npm_mirror_url": "http://registry.npmmirror.com/",
-    "hostname": "localhost",
     "port_range_start": 65100,
     "download_server": true,
     "web_netcat_server": true,
