@@ -99,7 +99,7 @@ def get_challenges():
                 p.update(json.load(f))
                 if p['enable']:
                     challenges.append(p)
-    return challenges
+    return sorted(challenges, key=lambda x: x['order'])
 
 def get_all_files(path):
     files_ = []

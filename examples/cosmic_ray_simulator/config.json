@@ -15,5 +15,6 @@
     "顶级黑客，轮到你了！",
     "你可以在内存中任意翻转一个 bit，但只能翻转一个哦~"
   ],
-  "download_file_name": "examples/bitflip"
+  "download_file_name": "examples/bitflip",
+  "order": 1
 }

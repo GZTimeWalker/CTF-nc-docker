@@ -12,5 +12,6 @@
     "让计算器的所有计算都是在 mod n 意义下进行",
     "出于某种众所周知的原因，他还用这个计算器算了一下 flag 字符串对应的整数的 65537 次方。"
   ],
-  "download_file_name": ""
+  "download_file_name": "",
+  "order": 0
 }

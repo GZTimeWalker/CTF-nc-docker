@@ -7,5 +7,6 @@
     "extra_cmd": [],
     "copy_files": [],
     "echo_msg": [],
-    "download_file_name": ""
+    "download_file_name": "",
+    "order": 0
 }
