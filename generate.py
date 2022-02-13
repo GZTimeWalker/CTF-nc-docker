@@ -10,6 +10,9 @@ CONFIG = {
     "pypi_index_url": "https://pypi.tuna.tsinghua.edu.cn/simple",
     "npm_mirror_url": "http://registry.npmmirror.com/",
     "port_range_start": 65100,
+    "show_download_host": True,
+    "hostname": "localhost",
+    "download_scheme": "http",
     "download_server": True,
     "web_netcat_server": True,
     "server_port": 65199,
@@ -34,7 +37,7 @@ $$    $$/    $$ |   $$ |           $$ | $$$ |$$    $$/
  $$$$$$/     $$/    $$/            $$/   $$/  $$$$$$/
 '''.split('\n')
 
-VERSION = ' 2.1.5 '
+VERSION = ' 2.1.6 '
 
 def init():
 
@@ -156,7 +159,10 @@ def generate_dockerfile(challenges):
                 script += f"echo \'{item}\'\n"
 
             if challenge['download_file_name'] != "":
-                script += f"echo \'题目附件：/{challenge['download_file_name']}\'\n"
+                if CONFIG['show_download_host']:
+                    script += f"echo \'题目附件：{CONFIG['download_scheme']}://{CONFIG['hostname']}:{CONFIG['server_port']}/{challenge['download_file_name']}\'\n"
+                else:
+                    script += f"echo \'题目附件：/{challenge['download_file_name']}\'\n"
             script += "echo \'\\e[32m{}\\e[0m\'\n".format('=' * 60)
             script += "echo \'\'\n"
 
