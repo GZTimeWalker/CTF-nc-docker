@@ -21,6 +21,9 @@ Edit `global.json` for global configuration, and `config.json` in each challenge
     "pypi_index_url": "https://pypi.tuna.tsinghua.edu.cn/simple",
     "npm_mirror_url": "http://registry.npmmirror.com/",
     "port_range_start": 65100,
+    "show_download_host": true,
+    "hostname": "localhost",
+    "download_scheme": "http",
     "download_server": true,
     "web_netcat_server": true,
     "server_port": 65199,
@@ -39,6 +42,9 @@ Edit `global.json` for global configuration, and `config.json` in each challenge
 - `pypi_index_url`: PyPI package source
 - `npm_mirror_url`: NPM package source
 - `port_range_start`: The start port for the range of ports for challenges
+- `show_download_host`: Show the download host in the challenge echo message
+- `hostname`: The hostname of the server
+- `download_scheme`: The scheme of the download server
 - `download_server`: Whether to enable the download server
 - `web_netcat_server`: Whether to enable the web netcat server
 - `server_port`: The port of the download server
@@ -60,7 +66,8 @@ Edit `global.json` for global configuration, and `config.json` in each challenge
     "extra_cmd": [],
     "copy_files": [],
     "echo_msg": ["Write some descr here."],
-    "download_file_name": ""
+    "download_file_name": "",
+    "order": 10
 }
 ```
 
@@ -73,6 +80,7 @@ Edit `global.json` for global configuration, and `config.json` in each challenge
 - `copy_files`: The files to copy to the container (when `all_copy` is false)
 - `echo_msg`: The echo message
 - `download_file_name`: The file name of the challenge file
+- `order`: Specific the order of the challenge (port order)
 
 ## Notice
 

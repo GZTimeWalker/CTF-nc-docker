@@ -22,6 +22,9 @@
     "pypi_index_url": "https://pypi.tuna.tsinghua.edu.cn/simple",
     "npm_mirror_url": "http://registry.npmmirror.com/",
     "port_range_start": 65100,
+    "show_download_host": true,
+    "hostname": "localhost",
+    "download_scheme": "http",
     "download_server": true,
     "web_netcat_server": true,
     "server_port": 65199,
@@ -40,6 +43,9 @@
 - `pypi_index_url`: PyPI 软件源
 - `npm_mirror_url`: NPM 软件源
 - `port_range_start`: 起始端口号
+- `show_download_host`: 是否在题目echo信息中显示下载服务器地址
+- `hostname`: 下载服务器的域名/IP
+- `download_scheme`: 下载服务所用协议
 - `download_server`: 是否开启文件下载服务
 - `web_netcat_server`: 是否开启网络 netcat 终端服务
 - `server_port`: 服务器端口
@@ -61,7 +67,8 @@
     "extra_cmd": [],
     "copy_files": [],
     "echo_msg": ["Write some descr here."],
-    "download_file_name": ""
+    "download_file_name": "",
+    "order": 10
 }
 ```
 
@@ -74,6 +81,7 @@
 - `copy_files`: 当不全部拷贝题目文件时，需要拷贝的文件 (相对于题目目录的路径)
 - `echo_msg`: 执行程序前输出的说明
 - `download_file_name`: 提供需要下载的题目文件
+- `order`: 题目顺序，用于端口分配
 
 ## 注意事项
 
