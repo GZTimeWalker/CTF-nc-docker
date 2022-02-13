@@ -97,6 +97,9 @@ def get_challenges():
                     'dir': ''.join([random.choice(alphabet) for _ in range(16)])
                 }
                 p.update(json.load(f))
+                if 'order' not in p.keys():
+                    p['order'] = 10
+                    print(f'[!] Challenge "{challenge}" has no order, set it to 10')
                 if p['enable']:
                     challenges.append(p)
     return sorted(challenges, key=lambda x: x['order'])
