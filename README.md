@@ -57,6 +57,7 @@ Edit `global.json` for global configuration, and `config.json` in each challenge
 {
     "enable": true,
     "pip_requirements": [],
+    "apt_requirements": [],
     "all_copy": true,
     "launch": "python3",
     "args": ["-u", "./src.py"],
@@ -70,6 +71,7 @@ Edit `global.json` for global configuration, and `config.json` in each challenge
 
 - `enable`: Whether to enable this challenge
 - `pip_requirements`: The requirements for pip packages
+- `apt_requirements`: Extra apt packages
 - `all_copy`: Whether to copy all files in the challenge directory (`config.json` is not included)
 - `launch`: The launch command
 - `args`: The arguments for the launch command

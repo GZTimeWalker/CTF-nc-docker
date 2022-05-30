@@ -58,6 +58,7 @@
 {
     "enable": true,
     "pip_requirements": [],
+    "apt_requirements": [],
     "all_copy": true,
     "launch": "python3",
     "args": ["-u", "./src.py"],
@@ -71,6 +72,7 @@
 
 - `enable`: 是否启用该题目
 - `pip_requirements`: 需要使用 pip 安装的包
+- `apt_requirements`: 额外需要的软件包
 - `all_copy`: 是否拷贝题目目录全部文件 (不拷贝`config.json`)
 - `launch`: 启动程序
 - `args`: 启动参数
