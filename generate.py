@@ -90,12 +90,14 @@ def get_challenges():
                 with open(os.path.join('challenges', challenge, 'config.json'),'w') as f:
                     f.write(default_config.read())
         else:
+            cfg = json.load(open(os.path.join('template', 'config.json'),'r', encoding='utf-8'))
             with open(os.path.join('challenges', challenge, 'config.json'),'r', encoding='utf-8') as f:
+                cfg.update(json.load(f))
                 p = {
                     'name': challenge.replace(' ','_').replace('-','_'),
                     'dir': ''.join([random.choice(alphabet) for _ in range(16)])
                 }
-                p.update(json.load(f))
+                p.update(cfg)
                 if 'order' not in p.keys():
                     p['order'] = 10
                     print(f'[!] Challenge "{challenge}" has no order, set it to 10')
