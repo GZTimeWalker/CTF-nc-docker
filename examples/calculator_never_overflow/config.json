@@ -1,6 +1,7 @@
 {
   "enable": true,
   "pip_requirements": ["sympy"],
+  "apt_requirements": [],
   "all_copy": true,
   "launch": "python3",
   "args": ["-u", "./src.py"],

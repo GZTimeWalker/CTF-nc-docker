@@ -13,7 +13,7 @@ RUN useradd -m ctf && \
     npm config set registry {npm_mirror_url}
 
 RUN apt update && apt upgrade -y &&\
-  apt install -y --no-install-recommends xinetd &&\
+  apt install -y --no-install-recommends xinetd {apt_requirements} &&\
   apt clean && rm -rf /var/lib/apt/lists/*
 
 # pip requirements

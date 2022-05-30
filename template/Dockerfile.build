@@ -29,7 +29,7 @@ RUN useradd -m ctf && \
     cp -ld /home/ctf/web/static/ld-* /home/ctf/web/static/ld.so
 
 RUN apt update && apt upgrade -y &&\
-  apt install -y --no-install-recommends xinetd netcat &&\
+  apt install -y --no-install-recommends xinetd netcat {apt_requirements} &&\
   apt clean && rm -rf /var/lib/apt/lists/*
 
 # pip requirements

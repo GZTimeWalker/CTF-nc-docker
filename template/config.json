@@ -1,5 +1,6 @@
 {
     "enable": true,
+    "pip_requirements": [],
     "apt_requirements": [],
     "all_copy": true,
     "launch": "python3",

@@ -36,7 +36,7 @@ $$    $$/    $$ |   $$ |           $$ | $$$ |$$    $$/
  $$$$$$/     $$/    $$/            $$/   $$/  $$$$$$/
 '''.split('\n')
 
-VERSION = ' 2.2.2 '
+VERSION = ' 2.2.3 '
 
 def init():
 
@@ -126,12 +126,15 @@ def generate_dockerfile(challenges):
         'chmod_cmd': '',
         'chmod_cmds': [],
         'pip_requirements': '',
+        'apt_requirements': '',
         'node_server': '',
         'pip_list': [],
+        'apt_list': []
     }
 
     for challenge in challenges:
         dockerfile_data['pip_list'] += challenge['pip_requirements']
+        dockerfile_data['apt_list'] += challenge['apt_requirements']
 
         if len(challenge['extra_cmd']) > 0:
             dockerfile_data['extra_cmd'] += f"# ==> for {challenge['name']}\n"
@@ -180,6 +183,9 @@ def generate_dockerfile(challenges):
         dockerfile_data['pip_requirements'] = ' '.join(dockerfile_data['pip_list'])
     else:
         dockerfile_data['pip_requirements'] = 'pip'
+
+    if len(dockerfile_data['apt_list']) > 0:
+        dockerfile_data['apt_requirements'] = ' '.join(dockerfile_data['apt_list'])
 
     template_name = 'Dockerfile'
 
