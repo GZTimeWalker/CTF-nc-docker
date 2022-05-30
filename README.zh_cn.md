@@ -23,7 +23,6 @@
     "npm_mirror_url": "http://registry.npmmirror.com/",
     "port_range_start": 65100,
     "show_download_host": true,
-    "hostname": "localhost",
     "download_url": "http://localhost:65199",
     "download_server": true,
     "web_netcat_server": true,
@@ -43,7 +42,6 @@
 - `npm_mirror_url`: NPM 软件源
 - `port_range_start`: 起始端口号
 - `show_download_host`: 是否在题目echo信息中显示下载服务器地址
-- `hostname`: 下载服务器的域名/IP
 - `download_url`: 显示在下载位置的服务器地址
 - `download_server`: 是否开启文件下载服务
 - `web_netcat_server`: 是否开启网络 netcat 终端服务

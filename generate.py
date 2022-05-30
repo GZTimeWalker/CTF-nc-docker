@@ -11,7 +11,6 @@ CONFIG = {
     "npm_mirror_url": "http://registry.npmmirror.com/",
     "port_range_start": 65100,
     "show_download_host": True,
-    "hostname": "localhost",
     "download_url": "http://localhost:65199",
     "download_server": True,
     "web_netcat_server": True,

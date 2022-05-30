@@ -22,7 +22,6 @@ Edit `global.json` for global configuration, and `config.json` in each challenge
     "npm_mirror_url": "http://registry.npmmirror.com/",
     "port_range_start": 65100,
     "show_download_host": true,
-    "hostname": "localhost",
     "download_url": "http://localhost:65199",
     "download_server": true,
     "web_netcat_server": true,
@@ -42,7 +41,6 @@ Edit `global.json` for global configuration, and `config.json` in each challenge
 - `npm_mirror_url`: NPM package source
 - `port_range_start`: The start port for the range of ports for challenges
 - `show_download_host`: Show the download host in the challenge echo message
-- `hostname`: The hostname of the server
 - `download_url`: The download url shown in the challenge echo message
 - `download_server`: Whether to enable the download server
 - `web_netcat_server`: Whether to enable the web netcat server
