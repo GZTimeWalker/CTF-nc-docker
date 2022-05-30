@@ -12,7 +12,7 @@ CONFIG = {
     "port_range_start": 65100,
     "show_download_host": True,
     "hostname": "localhost",
-    "download_scheme": "http",
+    "download_url": "http://localhost:65199",
     "download_server": True,
     "web_netcat_server": True,
     "server_port": 65199,
@@ -37,7 +37,7 @@ $$    $$/    $$ |   $$ |           $$ | $$$ |$$    $$/
  $$$$$$/     $$/    $$/            $$/   $$/  $$$$$$/
 '''.split('\n')
 
-VERSION = ' 2.2.1 '
+VERSION = ' 2.2.2 '
 
 def init():
 
@@ -163,7 +163,7 @@ def generate_dockerfile(challenges):
 
             if challenge['download_file_name'] != "":
                 if CONFIG['show_download_host']:
-                    script += f"echo \'题目附件：{CONFIG['download_scheme']}://{CONFIG['hostname']}:{CONFIG['server_port']}/{challenge['download_file_name']}\'\n"
+                    script += f"echo \'题目附件：{CONFIG['download_url']}/{challenge['download_file_name']}\'\n"
                 else:
                     script += f"echo \'题目附件：/{challenge['download_file_name']}\'\n"
             script += "echo \'\\e[32m{}\\e[0m\'\n".format('=' * 60)

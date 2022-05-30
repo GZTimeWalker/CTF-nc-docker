@@ -23,7 +23,7 @@ Edit `global.json` for global configuration, and `config.json` in each challenge
     "port_range_start": 65100,
     "show_download_host": true,
     "hostname": "localhost",
-    "download_scheme": "http",
+    "download_url": "http://localhost:65199",
     "download_server": true,
     "web_netcat_server": true,
     "server_port": 65199,
@@ -35,7 +35,6 @@ Edit `global.json` for global configuration, and `config.json` in each challenge
         "max_cpu": "0.5"
     }
 }
-
 ```
 
 - `mirrors_base_url`: Debian mirror source (domain)
@@ -44,7 +43,7 @@ Edit `global.json` for global configuration, and `config.json` in each challenge
 - `port_range_start`: The start port for the range of ports for challenges
 - `show_download_host`: Show the download host in the challenge echo message
 - `hostname`: The hostname of the server
-- `download_scheme`: The scheme of the download server
+- `download_url`: The download url shown in the challenge echo message
 - `download_server`: Whether to enable the download server
 - `web_netcat_server`: Whether to enable the web netcat server
 - `server_port`: The port of the download server

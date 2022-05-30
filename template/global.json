@@ -5,7 +5,7 @@
     "port_range_start": 65100,
     "show_download_host": true,
     "hostname": "localhost",
-    "download_scheme": "http",
+    "download_url": "http://localhost:65199",
     "download_server": true,
     "web_netcat_server": true,
     "server_port": 65199,
