@@ -266,6 +266,7 @@ def generate_xinetd(challenges):
         for challenge in challenges:
             challenge_data = {
                 'port': port,
+                'user': 'ctf' if 'user' not in challenge.keys() else challenge['user'],
                 'challenge_name': challenge['name'],
                 'challenge_alian': challenge['dir']
             }

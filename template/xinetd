@@ -5,7 +5,7 @@ service ctf
     socket_type = stream
     protocol    = tcp
     wait        = no
-    user        = ctf
+    user        = {user}
     type        = UNLISTED
     port        = {port}
     bind        = 0.0.0.0
