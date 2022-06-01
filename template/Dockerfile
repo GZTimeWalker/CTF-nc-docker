@@ -1,4 +1,4 @@
-FROM nikolaik/python-nodejs:python3.10-nodejs17-slim as final
+FROM nikolaik/python-nodejs:python3.10-nodejs18-slim as final
 
 ENV TZ Asia/Shanghai
 ENV LANG C.UTF-8

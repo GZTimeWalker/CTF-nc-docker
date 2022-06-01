@@ -1,4 +1,4 @@
-FROM nikolaik/python-nodejs:python3.10-nodejs17-slim as build
+FROM nikolaik/python-nodejs:python3.10-nodejs18-slim as build
 
 RUN npm config set registry {npm_mirror_url} &&\
     sed -i s@/deb.debian.org/@/{mirrors_base_url}/@g /etc/apt/sources.list && \
@@ -9,7 +9,7 @@ RUN npm config set registry {npm_mirror_url} &&\
 
 RUN cd /build && npm i --verbose
 
-FROM nikolaik/python-nodejs:python3.10-nodejs17-slim as final
+FROM nikolaik/python-nodejs:python3.10-nodejs18-slim as final
 
 ENV TZ Asia/Shanghai
 ENV LANG C.UTF-8
