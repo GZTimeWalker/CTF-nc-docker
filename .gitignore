@@ -17,3 +17,5 @@ attachments/*
 
 /web/src/**/node_modules
 /web/src/**/build
+
+**/.pnpm-store
