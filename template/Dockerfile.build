@@ -7,7 +7,7 @@ RUN npm config set registry {npm_mirror_url} &&\
 
 {node_server}
 
-RUN npm install -g pnpm && cd /build && pnpm i
+RUN cd /build && npm i
 
 FROM nikolaik/python-nodejs:python3.11-nodejs20-slim as final
 
