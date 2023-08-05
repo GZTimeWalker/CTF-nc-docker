@@ -1,4 +1,4 @@
-FROM nikolaik/python-nodejs:python3.10-nodejs18-slim as final
+FROM nikolaik/python-nodejs:python3.11-nodejs20-slim as final
 
 ENV TZ Asia/Shanghai
 ENV LANG C.UTF-8
@@ -8,8 +8,8 @@ RUN useradd -m ctf && \
     mkdir /home/ctf/run/ && \
     mkdir /var/log/ctf && \
     mkdir /home/ctf/assets/ && \
-    sed -i s@/deb.debian.org/@/{mirrors_base_url}/@g /etc/apt/sources.list && \
-    sed -i s@/security.debian.org/@/{mirrors_base_url}/@g /etc/apt/sources.list && \
+    sed -i s@/deb.debian.org/@/{mirrors_base_url}/@g /etc/apt/sources.list.d/debian.sources && \
+    sed -i s@/security.debian.org/@/{mirrors_base_url}/@g /etc/apt/sources.list.d/debian.sources && \
     npm config set registry {npm_mirror_url}
 
 RUN apt update && apt upgrade -y &&\

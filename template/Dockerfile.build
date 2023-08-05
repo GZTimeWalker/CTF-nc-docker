@@ -1,15 +1,15 @@
-FROM nikolaik/python-nodejs:python3.10-nodejs18-slim as build
+FROM nikolaik/python-nodejs:python3.11-nodejs20-slim as build
 
 RUN npm config set registry {npm_mirror_url} &&\
-    sed -i s@/deb.debian.org/@/{mirrors_base_url}/@g /etc/apt/sources.list && \
-    sed -i s@/security.debian.org/@/{mirrors_base_url}/@g /etc/apt/sources.list && \
+    sed -i s@/deb.debian.org/@/{mirrors_base_url}/@g /etc/apt/sources.list.d/debian.sources && \
+    sed -i s@/security.debian.org/@/{mirrors_base_url}/@g /etc/apt/sources.list.d/debian.sources && \
     apt update && apt install -y --no-install-recommends build-essential
 
 {node_server}
 
-RUN cd /build && npm i --verbose
+RUN cd /build && npm i --verbose --unsafe-perm --no-audit --no-fund --only=prod
 
-FROM nikolaik/python-nodejs:python3.10-nodejs18-slim as final
+FROM nikolaik/python-nodejs:python3.11-nodejs20-slim as final
 
 ENV TZ Asia/Shanghai
 ENV LANG C.UTF-8
@@ -20,16 +20,16 @@ RUN useradd -m ctf && \
     mkdir /var/log/ctf && \
     mkdir /home/ctf/assets/ && \
     mkdir -p /home/ctf/web/static && \
-    sed -i s@/deb.debian.org/@/{mirrors_base_url}/@g /etc/apt/sources.list && \
-    sed -i s@/security.debian.org/@/{mirrors_base_url}/@g /etc/apt/sources.list && \
+    sed -i s@/deb.debian.org/@/{mirrors_base_url}/@g /etc/apt/sources.list.d/debian.sources && \
+    sed -i s@/security.debian.org/@/{mirrors_base_url}/@g /etc/apt/sources.list.d/debian.sources && \
     npm config set registry {npm_mirror_url} && \
-    cp /lib/x86_64-linux-gnu/libc-* /home/ctf/web/static && \
-    cp -ld /home/ctf/web/static/libc-* /home/ctf/web/static/libc.so && \
-    cp /lib/x86_64-linux-gnu/ld-linux* /home/ctf/web/static && \
+    cp /lib/x86_64-linux-gnu/libc.so.6 /home/ctf/web/static && \
+    cp -ld /home/ctf/web/static/libc* /home/ctf/web/static/libc.so && \
+    cp /lib/x86_64-linux-gnu/ld-linux-x86-64.so.2 /home/ctf/web/static && \
     cp -ld /home/ctf/web/static/ld-* /home/ctf/web/static/ld.so
 
 RUN apt update && apt upgrade -y &&\
-  apt install -y --no-install-recommends xinetd netcat {apt_requirements} &&\
+  apt install -y --no-install-recommends xinetd netcat-openbsd {apt_requirements} &&\
   apt clean && rm -rf /var/lib/apt/lists/*
 
 # pip requirements
