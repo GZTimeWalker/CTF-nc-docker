@@ -38,6 +38,7 @@ $$    $$/    $$ |   $$ |           $$ | $$$ |$$    $$/
 
 VERSION = ' 3.0.0 '
 
+
 def init():
 
     col, _ = os.get_terminal_size()
@@ -50,21 +51,22 @@ def init():
     else:
         for root, _, files in os.walk('tmp'):
             for file in files:
-                os.remove(os.path.join(root,file))
+                os.remove(os.path.join(root, file))
 
     if not os.path.exists('global.json'):
-        with open('template/global.json','r') as f:
-            with open('global.json','w') as g:
+        with open('template/global.json', 'r') as f:
+            with open('global.json', 'w') as g:
                 g.write(f.read())
         print('[+] Please edit your custom config in global.json')
     else:
-        with open('global.json','r') as f:
+        with open('global.json', 'r') as f:
             CONFIG.update(json.load(f))
 
     if not os.path.exists('challenges'):
         os.makedirs('challenges')
         print('[+] Please put your challenges in ./challenges/')
-        print('[+] You can find examples at https://github.com/GZTimeWalker/CTF-nc-docker')
+        print(
+            '[+] You can find examples at https://github.com/GZTimeWalker/CTF-nc-docker')
 
     if not os.path.exists('attachments'):
         os.makedirs('attachments')
@@ -73,12 +75,15 @@ def init():
         print('[!] No template available!')
         exit(1)
     else:
-        requires = ['Dockerfile','Dockerfile.build','docker-compose.yml','xinetd','config.json','index.html','global.json']
+        requires = ['Dockerfile', 'Dockerfile.build', 'docker-compose.yml',
+                    'xinetd', 'config.json', 'index.html', 'global.json']
         for root, _, files in os.walk('template'):
             for file in requires:
                 if file not in files:
-                    print(f'Template file {os.path.join(root,file)} not found!')
+                    print(
+                        f'Template file {os.path.join(root,file)} not found!')
                     exit(1)
+
 
 def get_challenges():
     challenges = []
@@ -86,24 +91,27 @@ def get_challenges():
         if not os.path.isdir(os.path.join('challenges', challenge)):
             continue
         if not os.path.exists(os.path.join('challenges', challenge, 'config.json')):
-            with open('template/config.json','r') as default_config:
-                with open(os.path.join('challenges', challenge, 'config.json'),'w') as f:
+            with open('template/config.json', 'r') as default_config:
+                with open(os.path.join('challenges', challenge, 'config.json'), 'w') as f:
                     f.write(default_config.read())
         else:
-            cfg = json.load(open(os.path.join('template', 'config.json'),'r', encoding='utf-8'))
-            with open(os.path.join('challenges', challenge, 'config.json'),'r', encoding='utf-8') as f:
+            cfg = json.load(
+                open(os.path.join('template', 'config.json'), 'r', encoding='utf-8'))
+            with open(os.path.join('challenges', challenge, 'config.json'), 'r', encoding='utf-8') as f:
                 cfg.update(json.load(f))
                 p = {
-                    'name': challenge.replace(' ','_').replace('-','_'),
+                    'name': challenge.replace(' ', '_').replace('-', '_'),
                     'dir': ''.join([random.choice(alphabet) for _ in range(16)])
                 }
                 p.update(cfg)
                 if 'order' not in p.keys():
                     p['order'] = 10
-                    print(f'[!] Challenge "{challenge}" has no order, set it to 10')
+                    print(
+                        f'[!] Challenge "{challenge}" has no order, set it to 10')
                 if p['enable']:
                     challenges.append(p)
     return sorted(challenges, key=lambda x: x['order'])
+
 
 def get_all_files(path):
     files_ = []
@@ -114,6 +122,7 @@ def get_all_files(path):
         for dir_ in dirs:
             files_ += get_all_files(os.path.join(root, dir_))
     return files_
+
 
 def generate_dockerfile(challenges):
     print(f'[+] Generating Dockerfile...')
@@ -146,16 +155,19 @@ def generate_dockerfile(challenges):
         if challenge['all_copy'] or len(challenge['copy_files']) > 0:
             dockerfile_data['copy_challenge_cmd'] += f"# ==> for {challenge['name']}\n"
             if challenge['all_copy']:
-                items = get_all_files(os.path.join('challenges',challenge['name']))
+                items = get_all_files(os.path.join(
+                    'challenges', challenge['name']))
             else:
-                items = [f"challenges/{challenge['name']}/" + i for i in challenge['copy_files']]
+                items = [f"challenges/{challenge['name']}/" +
+                         i for i in challenge['copy_files']]
             dest = f"{challenge['dir']}/"
             dockerfile_data['copy_challenge_cmd'] += f"COPY {' '.join(items)} {dest}\n"
 
         script = f"#!/bin/sh\n\ncd /home/ctf/{challenge['dir']}\n"
 
         if CONFIG['show_echo_msg'] and len(challenge['echo_msg']) > 0:
-            script += "echo \'\\e[32m{}\\e[0m\'\n".format((' \\e[33m' + challenge['name'] + ' \\e[32m').center(72,'='))
+            script += "echo \'\\e[32m{}\\e[0m\'\n".format(
+                (' \\e[33m' + challenge['name'] + ' \\e[32m').center(72, '='))
 
             if CONFIG['show_warn_msg']:
                 script += "echo \'\\e[32m!!!  \\e[31m此环境为测试训练环境，安全性较弱，请勿执行恶意代码  \\e[32m!!!\\e[0m\'\n"
@@ -175,19 +187,23 @@ def generate_dockerfile(challenges):
 
         script += f"{challenge['launch']} {' '.join(challenge['args'])}\n"
 
-        with open(f"tmp/run/{challenge['dir']}.sh",'wb') as f:
+        with open(f"tmp/run/{challenge['dir']}.sh", 'wb') as f:
             f.write(script.encode())
 
-        dockerfile_data['chmod_cmds'].append(f"chmod 755 /home/ctf/run/{challenge['dir']}.sh")
-        dockerfile_data['chmod_cmds'].append(f"chmod -R 755 /home/ctf/{challenge['dir']}")
+        dockerfile_data['chmod_cmds'].append(
+            f"chmod 755 /home/ctf/run/{challenge['dir']}.sh")
+        dockerfile_data['chmod_cmds'].append(
+            f"chmod -R 755 /home/ctf/{challenge['dir']}")
 
     if len(dockerfile_data['pip_list']) > 0:
-        dockerfile_data['pip_requirements'] = ' '.join(dockerfile_data['pip_list'])
+        dockerfile_data['pip_requirements'] = ' '.join(
+            dockerfile_data['pip_list'])
     else:
         dockerfile_data['pip_requirements'] = 'pip'
 
     if len(dockerfile_data['apt_list']) > 0:
-        dockerfile_data['apt_requirements'] = ' '.join(dockerfile_data['apt_list'])
+        dockerfile_data['apt_requirements'] = ' '.join(
+            dockerfile_data['apt_list'])
 
     template_name = 'Dockerfile'
 
@@ -206,13 +222,15 @@ def generate_dockerfile(challenges):
     if CONFIG['download_server']:
         dockerfile_data['node_server'] += "COPY tmp/index.html attachments /build/static/\n"
 
-    dockerfile_data['chmod_cmd'] = "RUN " + ' && \\\n '.join(dockerfile_data['chmod_cmds'])
+    dockerfile_data['chmod_cmd'] = "RUN " + \
+        ' && \\\n '.join(dockerfile_data['chmod_cmds'])
 
-    with open(f'template/{template_name}','r') as f:
+    with open(f'template/{template_name}', 'r') as f:
         template = f.read()
 
-    with open('Dockerfile','wb') as f:
+    with open('Dockerfile', 'wb') as f:
         f.write(template.format(**dockerfile_data).encode())
+
 
 def generate_start_sh(challenges):
     print(f'[+] Generating launch script...')
@@ -229,8 +247,9 @@ def generate_start_sh(challenges):
         template += f'nohup node server.js {CONFIG["server_port"]} > /var/log/server.log 2>&1 &\n'
 
     template += 'cd / && xinetd -dontfork'
-    with open('tmp/start.sh','wb') as f:
+    with open('tmp/start.sh', 'wb') as f:
         f.write(template.encode())
+
 
 def generate_index(challenges):
     print(f'[+] Generating web index...')
@@ -243,26 +262,28 @@ def generate_index(challenges):
         port = port + 1
         index_data += row
 
-    with open('template/index.html','r') as f:
+    with open('template/index.html', 'r') as f:
         template = f.read()
 
-    with open('tmp/index.html','wb') as f:
+    with open('tmp/index.html', 'wb') as f:
         template = template.replace('{challenges_trs}', index_data)
         if CONFIG['web_netcat_server']:
-            template = template.replace('{web_netcat_link}', '<p> Web netcat: <a href="/wnc"><code><span class="url"></span>/wnc</code></a></p>')
+            template = template.replace(
+                '{web_netcat_link}', '<p> Web netcat: <a href="/wnc"><code><span class="url"></span>/wnc</code></a></p>')
         else:
             template = template.replace('{web_netcat_link}', '')
         f.write(template.encode())
+
 
 def generate_xinetd(challenges):
     print(f'[+] Generating xinetd config...')
 
     port = CONFIG['port_range_start']
 
-    with open('template/xinetd','r') as f:
+    with open('template/xinetd', 'r') as f:
         template = f.read()
 
-    with open('xinetd','wb') as f:
+    with open('xinetd', 'wb') as f:
         for challenge in challenges:
             challenge_data = {
                 'port': port,
@@ -275,12 +296,13 @@ def generate_xinetd(challenges):
             f.write(b'\n\n')
             port += 1
 
+
 def generate_dockercompose(challenges):
     dockercompose_data = {}
 
     print(f'[+] Generating docker-compose.yml...')
 
-    with open('template/docker-compose.yml','r') as f:
+    with open('template/docker-compose.yml', 'r') as f:
         template = f.read()
 
     ports = ''
@@ -296,20 +318,23 @@ def generate_dockercompose(challenges):
     if CONFIG['resource_limit']['enable']:
         res_lim += 'deploy:\n      resources:\n        limits:\n'
         res_lim += f'          cpus: "{CONFIG["resource_limit"]["max_cpu"]}"\n'
-        print(f'[+] Container CPU limit: {CONFIG["resource_limit"]["max_cpu"]}')
+        print(
+            f'[+] Container CPU limit: {CONFIG["resource_limit"]["max_cpu"]}')
         res_lim += f'          memory: "{CONFIG["resource_limit"]["max_memory"]}"\n'
-        print(f'[+] Container Memory limit: {CONFIG["resource_limit"]["max_memory"]}')
+        print(
+            f'[+] Container Memory limit: {CONFIG["resource_limit"]["max_memory"]}')
 
     dockercompose_data['resource_limit'] = res_lim
 
-    with open('docker-compose.yml','w') as f:
+    with open('docker-compose.yml', 'w') as f:
         f.write(template.format(**dockercompose_data))
+
 
 if __name__ == "__main__":
     init()
     challenges = get_challenges()
 
-    if(len(challenges) == 0):
+    if (len(challenges) == 0):
         print('[!] No challenge found!')
         exit(1)
 
@@ -336,7 +361,9 @@ if __name__ == "__main__":
         port = port + 1
 
     if CONFIG['download_server']:
-        print(f'[+] Your web page is now available at http://localhost:{CONFIG["server_port"]}.')
+        print(
+            f'[+] Your web page is now available at http://localhost:{CONFIG["server_port"]}.')
 
     if CONFIG['web_netcat_server']:
-        print(f'[+] Your web netcat is now available at http://localhost:{CONFIG["server_port"]}/wnc.')
+        print(
+            f'[+] Your web netcat is now available at http://localhost:{CONFIG["server_port"]}/wnc.')

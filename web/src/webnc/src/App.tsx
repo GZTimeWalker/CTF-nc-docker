@@ -1,8 +1,8 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Box } from "@chakra-ui/react";
-import { Route, Routes } from "react-router";
 import { Portal } from "./Portal";
 import { XTerm } from "./XTerm";
+import { Routes, Route } from "react-router-dom";
 
 export const App: FC = () => {
   return (
